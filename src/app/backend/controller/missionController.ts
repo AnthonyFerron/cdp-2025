@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import MissionBusinessLogic from "../businessLogic/missionBusinessLogic";
-import { MissionCreateDto } from "../models/mission/mission.model";
+import { MissionCreateDto, MissionDeleteDto } from "../models/mission/mission.model";
 
 
 export default class MissionController {
@@ -38,6 +38,22 @@ export default class MissionController {
                 return new NextResponse(null, { status: 200 })
             } else {
                 return new NextResponse('Les champs sont incomplets', { status: 400 })
+            }
+        } catch (err) {
+            console.error(err)
+            return new NextResponse('Erreur serveur', { status: 500 })
+        }
+    }
+
+    async deleteMission(req: Request) {
+        try {
+            const { idMission }: MissionDeleteDto = await req.json()
+
+            if (idMission && typeof idMission === 'number') {
+                await this.userBusinesLogic.deleteMission(idMission)
+                return new NextResponse(null, { status: 200 })
+            } else {
+                return new NextResponse(`L'id de la mission est incorrect`, { status: 400 })
             }
         } catch (err) {
             console.error(err)

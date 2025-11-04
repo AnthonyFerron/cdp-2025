@@ -1,5 +1,5 @@
 import MissionCrud from "../crud/missionCrud";
-import { IdBadge } from "../types/custom.types";
+import { IdBadge, IdMission } from "../types/custom.types";
 
 
 export default class MissionBusinessLogic {
@@ -17,5 +17,9 @@ export default class MissionBusinessLogic {
             targetType,
             (idBadge && typeof idBadge === 'number') ? idBadge as IdBadge : undefined
         )
+    }
+
+    async deleteMission(idMission: IdMission) {
+        await this.missionCrud.deleteMission(idMission)
     }
 }
