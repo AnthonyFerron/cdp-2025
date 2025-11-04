@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import MissionBusinessLogic from "../businessLogic/missionBusinessLogic";
-import { MissionCreateDto, MissionDeleteDto } from "../models/mission/mission.model";
+import { Mission, MissionCreateDto, MissionDeleteDto } from "../models/mission/mission.model";
+import { GetMissionWithIdBusinessLogicError } from "../errors/businessLogic/missionBusinessLogicError";
+import { IdMission } from "../types/custom.types";
 
 
 export default class MissionController {
@@ -55,6 +57,37 @@ export default class MissionController {
             } else {
                 return new NextResponse(`L'id de la mission est incorrect`, { status: 400 })
             }
+        } catch (err) {
+            console.error(err)
+            return new NextResponse('Erreur serveur', { status: 500 })
+        }
+    }
+
+    async getMissionWithId(req: Request) {
+        try {
+            const url = new URL(req.url)
+            const idMission: unknown = url.searchParams.get('id')
+            
+            if (idMission && typeof idMission === 'string') {
+                const mission = await this.userBusinesLogic.getMissionWithId(parseInt(idMission) as IdMission)
+                return NextResponse.json<Mission>(mission, { status: 200 })
+            } else {
+                return new NextResponse(`L'id de la mission est incorrect`, { status: 400 })
+            }
+        } catch (err) {
+            if (err instanceof GetMissionWithIdBusinessLogicError) {
+                return new NextResponse(`L'id de la mission est incorrect`, { status: 400 })
+            } else {
+                console.error(err)
+                return new NextResponse('Erreur serveur', { status: 500 })
+            }
+        }
+    }
+
+    async getMissions(req: Request) {
+        try {
+            const missions = await this.userBusinesLogic.getMissions()
+            return NextResponse.json<Mission[]>(missions, { status: 200 })
         } catch (err) {
             console.error(err)
             return new NextResponse('Erreur serveur', { status: 500 })

@@ -1,4 +1,4 @@
-import getAdminUrl from "@/app/admin/helpers/getAdminUrl"
+import getAdminUrl from "@/app/helpers/getAdminUrl"
 
 
 const adminUrl = getAdminUrl()
