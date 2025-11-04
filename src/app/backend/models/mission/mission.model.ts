@@ -6,10 +6,10 @@ export type MissionDB = {
     title: string
     content: string
     target_type: string
-    reward_xp: number
-    reward_coins: number
+    reward_xp: number | null
+    reward_coins: number | null
     create_at: string
-    id_badge?: IdBadge
+    id_badge: IdBadge | null
 }
 
 export type Mission = {
@@ -17,10 +17,10 @@ export type Mission = {
     title: string
     content: string
     targetType: string
-    rewardXp: number
-    rewardCoins: number
+    rewardXp: number | null
+    rewardCoins: number | null
     createAt: string
-    idBadge?: IdBadge
+    idBadge: IdBadge | null
 }
 
 export type MissionCreateDto = {
