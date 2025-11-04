@@ -25,12 +25,12 @@ export default function Accueil() {
           <p className="md:text-3xl text-[#8BF37B] mt-2">Rejoins une communauté de plus de 10 000 apprenants actifs qui progressent chaque jour dans l’apprentissage du développement web et de Python.Que tu sois débutant ou déjà passionné par le code, tu apprends aux côtés d’autres utilisateurs motivés, partageant leurs questions, leurs projets et leurs réussites, pour avancer ensemble dans la logique et la pratique du programmation</p>
         </div>
       </div>
-      <div className="grid grid-cols-5 text-white text-center text-xs">
-        <a href="">Contact</a>
-        <a href="">Mon profil</a>
-        <a href="">CGV</a>
-        <a href="">CGU</a>
-        <a href="">Confidentialité</a>
+      <div className="grid grid-cols-5 text-white text-center text-xs mx-12">
+        <a className="md:text-3xl" href="">Contact</a>
+        <a className="md:text-3xl" href="">Mon profil</a>
+        <a className="md:text-3xl" href="">CGV</a>
+        <a className="md:text-3xl" href="">CGU</a>
+        <a className="md:text-3xl" href="">Confidentialité</a>
       </div>
     </div>
   );
