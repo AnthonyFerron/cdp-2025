@@ -11,9 +11,9 @@ export default function SignInPage() {
     const { error } = await authClient.signIn.email({
       email,
       password,
-      // callbackURL: "/dashboard", rememberMe: true (optionnels)
+      // callbackURL: "/", rememberMe: true (optionnels)
     });
-    if (!error) window.location.href = "/dashboard";
+    if (!error) window.location.href = "/";
   }
 
   return (

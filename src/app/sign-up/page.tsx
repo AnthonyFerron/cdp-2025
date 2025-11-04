@@ -12,9 +12,8 @@ export default function SignUpPage() {
       email,
       password,
       name: email.split("@")[0] || "",
-      // image, callbackURL: "/dashboard" (optionnels)
     });
-    if (!error) window.location.href = "/dashboard";
+    if (!error) window.location.href = "/";
   }
 
   return (
