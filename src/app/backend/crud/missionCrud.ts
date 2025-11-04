@@ -1,5 +1,5 @@
 import CrudError from "../errors/crudError";
-import { IdBadge } from "../types/custom.types";
+import { IdBadge, IdMission } from "../types/custom.types";
 import ConfigCrud from "./configCrud";
 
 
@@ -26,6 +26,18 @@ export default class MissionCrud extends ConfigCrud {
             })
         } catch (err) {
             throw new CrudError('createMission', String(err))
+        }
+    }
+
+    async deleteMission(idMission: IdMission) {
+        try {
+            await this.prisma.mission.delete({
+                where: {
+                    id_mission: idMission
+                }
+            })
+        } catch (err) {
+            throw new CrudError('deleteMission', String(err))
         }
     }
 }

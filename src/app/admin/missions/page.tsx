@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from 'react'
-import createMission from '@/app/requests/admin/createMission'
+import createMission from '@/app/requests/admin/mission/createMission'
+import deleteMission from '@/app/requests/admin/mission/deleteMission'
 
 
 export default function MissionsPage() {
@@ -11,9 +12,10 @@ export default function MissionsPage() {
   const [rewardXp, setRewardXp] = useState(0)
   const [targetType, setTargetType] = useState('')
   const [idBadge, setIdBadge] = useState<number | undefined>(undefined)
+  const [idMissionDeleted, setIdMissionDeleted] = useState<number | undefined>(undefined)
   const [error, setError] = useState('')
 
-  const submit = async (e: React.FormEvent) => {
+  const createMissionSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
     if (title && content && rewardCoins && rewardXp && targetType) {
@@ -37,6 +39,21 @@ export default function MissionsPage() {
     }
   }
 
+  const deletMissionSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+
+    if (idMissionDeleted) {
+
+      const res = await deleteMission({ idMission: idMissionDeleted })
+      if (!res.ok) {
+        setError(`Erreur lors de la suppréssion d'une missions`)
+      }
+    } else {
+      setError('Veuillez rentrer un idMission')
+    }
+  }
+
   return (
     <div>
       {
@@ -44,7 +61,7 @@ export default function MissionsPage() {
           <p className='text-red-500 text-xl'>{error}</p>
         )
       }
-      <form onSubmit={submit}>
+      <form onSubmit={createMissionSubmit}>
         <input
           type='text'
           value={title}
@@ -86,6 +103,17 @@ export default function MissionsPage() {
         />
 
         <button type="submit">Create</button>
+      </form>
+
+      <form onSubmit={deletMissionSubmit}>
+        <input
+          type="numeric"
+          value={idMissionDeleted}
+          placeholder='Enter idMission'
+          onChange={(e) => setIdMissionDeleted(parseInt(e.target.value))}
+        />
+
+        <button type="submit">Delete</button>
       </form>
     </div>
   )

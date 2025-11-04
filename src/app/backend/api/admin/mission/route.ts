@@ -9,3 +9,5 @@ const missionController = new MissionController(missionBusinessLogic)
 
 
 export const POST = async (req: Request) => missionController.createMission(req)
+
+export const DELETE = async (req: Request) => missionController.deleteMission(req)

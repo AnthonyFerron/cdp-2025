@@ -31,3 +31,7 @@ export type MissionCreateDto = {
     rewardCoins?: unknown
     idBadge?: unknown
 }
+
+export type MissionDeleteDto = {
+    idMission?: IdMission
+}
