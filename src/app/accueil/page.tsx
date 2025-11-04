@@ -1,5 +1,6 @@
 "use client";
 import Header from "@/composants/header/header";
+import Footer from "@/composants/header/footer";
 
 
 export default function Accueil() {
@@ -35,6 +36,7 @@ export default function Accueil() {
           <a className="md:text-3xl" href="">Confidentialité</a>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
