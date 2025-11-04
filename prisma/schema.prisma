@@ -13,17 +13,257 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Country {
+  id_country Int    @id @default(autoincrement())
+  name       String @unique @db.VarChar(50)
+  image      String @db.VarChar(50)
+
+  player player[]
+}
+
+model Cosmetic {
+  id_cosmetic Int     @id @default(autoincrement())
+  type        String  @db.VarChar(50)
+  price       Int
+  is_active   Boolean
+
+  owned owned[]
+}
+
+model Badge {
+  id_badge Int    @id @default(autoincrement())
+  name     String @db.VarChar(50)
+  icon     String @db.VarChar(50)
+
+  Mission Mission[]
+  earned  earned[]
+}
+
+model Mission {
+  id_mission   Int    @id @default(autoincrement())
+  target_type  String @db.VarChar(50)
+  reward_xp    Int?
+  reward_coins Int?
+  id_badge     Int?
+
+  Badge    Badge?     @relation(fields: [id_badge], references: [id_badge])
+  achieved achieved[]
+}
+
+model Programming_Language {
+  id_language Int     @id @default(autoincrement())
+  name        String  @unique @db.VarChar(50)
+  is_public   Boolean
+
+  Course Course[]
+}
+
+model Course {
+  id_course      Int     @id @default(autoincrement())
+  title          String  @db.VarChar(50)
+  slug           String  @db.VarChar(50)
+  difficulty     Int
+  is_published   Boolean
+  estimated_time Int
+  id_language    Int
+
+  Programming_Language Programming_Language @relation(fields: [id_language], references: [id_language])
+  Lore                 Lore[]
+  Course_section       Course_section[]
+  Quiz                 Quiz[]
+  progress             progress[]
+  to_gamify            to_gamify[]
+}
+
+model Lore {
+  id_lore   Int    @id @default(autoincrement())
+  content   String @db.VarChar(50)
+  id_course Int
+
+  Course Course @relation(fields: [id_course], references: [id_course])
+}
+
+model Course_section {
+  id_course_section Int    @id @default(autoincrement())
+  order_by          Int
+  title             String @db.VarChar(50)
+  content           String @db.VarChar(8000)
+  image             String @db.VarChar(50)
+  id_course         Int
+
+  Course   Course     @relation(fields: [id_course], references: [id_course])
+  progress progress[]
+
+  @@unique([order_by])
+}
+
+model Quiz {
+  id_quiz    Int  @id @default(autoincrement())
+  difficulty Int
+  time_limit Int
+  id_course  Int?
+
+  Course        Course?         @relation(fields: [id_course], references: [id_course])
+  quiz_question quiz_question[]
+  Quiz_Attempt  Quiz_Attempt[]
+}
+
+model quiz_question {
+  id_quiz_question Int    @id @default(autoincrement())
+  question         String @db.VarChar(50)
+  choices          String @db.VarChar(500)
+  answer           String @db.VarChar(50)
+  id_quiz          Int
+
+  Quiz Quiz @relation(fields: [id_quiz], references: [id_quiz])
+}
+
+model Game {
+  id_game    Int @id @default(autoincrement())
+  difficulty Int
+  time_limit Int
+
+  Help_Content Help_Content[]
+  Game_Attempt Game_Attempt[]
+  to_gamify    to_gamify[]
+}
+
+model Help_Content {
+  id_help_content Int    @id @default(autoincrement())
+  content         String @db.VarChar(200)
+  order_by        Int
+  id_game         Int
+
+  Game Game   @relation(fields: [id_game], references: [id_game])
+  Used Used[]
+}
+
+model player {
+  id_player  Int    @id @default(autoincrement())
+  pseudo     String @unique @db.VarChar(50)
+  email      String @unique @db.VarChar(50)
+  password   String @db.VarChar(50)
+  experience Int
+  levels     Int
+  coins      Int
+  role       String @db.VarChar(50)
+  id_country Int
+
+  Country      Country        @relation(fields: [id_country], references: [id_country])
+  progress     progress[]
+  Quiz_Attempt Quiz_Attempt[]
+  Game_Attempt Game_Attempt[]
+  owned        owned[]
+  earned       earned[]
+  achieved     achieved[]
+  Used         Used[]
+}
+
+model progress {
+  id_progress       Int @id @default(autoincrement())
+  progress_point    Int
+  id_course_section Int
+  id_course         Int
+  id_player         Int
+
+  Course_section Course_section @relation(fields: [id_course_section], references: [id_course_section])
+  Course         Course         @relation(fields: [id_course], references: [id_course])
+  player         player         @relation(fields: [id_player], references: [id_player])
+}
+
+model Quiz_Attempt {
+  id_quiz_attempt Int      @id @default(autoincrement())
+  score           Int
+  passed          Boolean
+  started_at      DateTime
+  completed_at    DateTime
+  id_player       Int
+  id_quiz         Int
+
+  player player @relation(fields: [id_player], references: [id_player])
+  Quiz   Quiz   @relation(fields: [id_quiz], references: [id_quiz])
+}
+
+model Game_Attempt {
+  id_game_attempt Int      @id @default(autoincrement())
+  score           Int
+  passed          Boolean
+  started_at      DateTime
+  completed_at    DateTime
+  id_player       Int
+  id_game         Int
+
+  player player @relation(fields: [id_player], references: [id_player])
+  Game   Game   @relation(fields: [id_game], references: [id_game])
+}
+
+model owned {
+  id_player   Int
+  id_cosmetic Int
+  is_equiped  Boolean
+  aquired_at  DateTime
+
+  player   player   @relation(fields: [id_player], references: [id_player])
+  Cosmetic Cosmetic @relation(fields: [id_cosmetic], references: [id_cosmetic])
+
+  @@id([id_player, id_cosmetic])
+}
+
+model earned {
+  id_player  Int
+  id_badge   Int
+  is_equiped Boolean
+  earned_at  DateTime
+
+  player player @relation(fields: [id_player], references: [id_player])
+  Badge  Badge  @relation(fields: [id_badge], references: [id_badge])
+
+  @@id([id_player, id_badge])
+}
+
+model achieved {
+  id_player  Int
+  id_mission Int
+  status     String @db.VarChar(50)
+
+  player  player  @relation(fields: [id_player], references: [id_player])
+  Mission Mission @relation(fields: [id_mission], references: [id_mission])
+
+  @@id([id_player, id_mission])
+}
+
+model to_gamify {
+  id_course Int
+  id_game   Int
+
+  Course Course @relation(fields: [id_course], references: [id_course])
+  Game   Game   @relation(fields: [id_game], references: [id_game])
+
+  @@id([id_course, id_game])
+}
+
+model Used {
+  id_player       Int
+  id_help_content Int
+
+  player       player       @relation(fields: [id_player], references: [id_player])
+  Help_Content Help_Content @relation(fields: [id_help_content], references: [id_help_content])
+
+  @@id([id_player, id_help_content])
+}
+
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  name          String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id            String    @id
+  name          String
+  email         String
   emailVerified Boolean   @default(false)
   image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
 
+  @@unique([email])
   @@map("user")
 }
 
