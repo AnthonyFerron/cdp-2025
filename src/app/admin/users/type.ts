@@ -9,5 +9,6 @@ export type User = {
   levels: number;
   coins: number;
   role: string;
-  id_country: number;
+  idCountry: number;
+  createAt: Date;
 };
