@@ -14,27 +14,32 @@ export default function SignInPage() {
       // callbackURL: "/", rememberMe: true (optionnels)
     });
     if (!error) window.location.href = "/";
+
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-3 max-w-sm mx-auto mt-10">
-      <input
-        className="border p-2 w-full"
-        type="email"
-        value={email}
-        placeholder="email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        className="border p-2 w-full"
-        type="password"
-        value={password}
-        placeholder="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit" className="border p-2 w-full">
-        Sign in
-      </button>
-    </form>
+    <div className="bg-[#1D1D1D] p-10 font-[silkscreen] min-h-screen flex flex-col items-center justify-center gap-8">
+      <h1 className="bg-white text-center max-w-md w-full text-[48px] p-4 rounded-lg">Se connecter</h1>
+
+      <form onSubmit={onSubmit} className="space-y-3 max-w-md w-full">
+        <input
+          className="text-2xl border p-4 w-full bg-white rounded-lg"
+          type="email"
+          value={email}
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          className="text-2xl border p-4 w-full bg-white rounded-lg"
+          type="password"
+          value={password}
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit" className="text-2xl border p-4 w-full bg-white rounded-lg mt-4">
+          Connexion
+        </button>
+      </form>
+    </div>
   );
 }
