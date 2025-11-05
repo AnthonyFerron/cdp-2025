@@ -19,9 +19,19 @@ export default function Header() {
         <img className="h-auto w-[15%]" src="boutique.png" alt="boutique" />
         <span>Boutique</span>
       </div>
-      <div className="flex items-center justify-center gap-2">
+      <div className="hidden flex items-center justify-center gap-2">
         <img className="h-auto w-[15%]" src="compte.png" alt="compte" />
         <span>Compte</span>
+      </div>
+      <div className="flex items-center justify-center gap-2">
+        <div className="flex flex-col items-center">
+          <div className="flex items-center gap-2">
+            <span>350</span>
+            <img className="h-auto w-[100%]" src="coins.png" alt="pieces" />
+          </div>
+          <p>Niveau 3</p>
+        </div>
+        <img className="h-auto w-[15%]" src="alien_vert.png" alt="compte" />
       </div>
     </div>
   );
