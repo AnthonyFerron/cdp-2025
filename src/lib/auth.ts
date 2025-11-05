@@ -12,5 +12,8 @@ export const auth = betterAuth({
     enabled: true,
   },
 
+  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+  basePath: "/backend/api/auth",
+
   plugins: [nextCookies()],
 });
