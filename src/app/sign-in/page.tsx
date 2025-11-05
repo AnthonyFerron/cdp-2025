@@ -36,6 +36,12 @@ export default function SignInPage() {
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
+        
+        <div className="text-center">
+          <span className="text-white text-xl">Pas de compte ? </span>
+          <a className="text-blue-600 text-xl" href="/sign-up">Inscrivez-vous</a>
+        </div>
+
         <button type="submit" className="text-2xl border p-4 w-full bg-white rounded-lg mt-4">
           Connexion
         </button>
