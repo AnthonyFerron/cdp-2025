@@ -2,14 +2,14 @@ import { IdBadge, IdMission } from "../../types/custom.types"
 
 
 export type MissionDB = {
-    id_mission: IdMission
+    id_mission: number
     title: string
     content: string
     target_type: string
     reward_xp: number | null
     reward_coins: number | null
-    create_at: string
-    id_badge: IdBadge | null
+    create_at: Date
+    id_badge: number | null
 }
 
 export type Mission = {
@@ -19,7 +19,7 @@ export type Mission = {
     targetType: string
     rewardXp: number | null
     rewardCoins: number | null
-    createAt: string
+    createAt: Date
     idBadge: IdBadge | null
 }
 
