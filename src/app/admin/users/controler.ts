@@ -1,43 +1,57 @@
 import { User } from "./type";
+import getUsersRequest from "@/app/requests/admin/user/getUsers";
+import getUserRequest from "@/app/requests/admin/user/getUser";
+import createUserRequest from "@/app/requests/admin/user/createUser";
+import updateUserRequest from "@/app/requests/admin/user/updateUser";
+import deleteUserRequest from "@/app/requests/admin/user/deleteUser";
 
 export async function getUsers(): Promise<User[]> {
-  const res = await fetch("/backend/api/user");
-  const data = await res.json();
-  return data.users as User[];
+  const data = await getUsersRequest();
+  return data || [];
 }
 
-export async function getUser(id: string): Promise<User> {
-  const res = await fetch(`/backend/api/user/${id}`);
-  const data = await res.json();
-  return data as User;
+export async function getUser(id: string): Promise<User | null> {
+  return await getUserRequest(id);
 }
 
-export async function createUser(user: User): Promise<User> {
-  const res = await fetch("/backend/api/user", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ user }),
+export async function createUser(user: User): Promise<User | null> {
+  const res = await createUserRequest({
+    id: user.id,
+    name: user.name || "",
+    email: user.email,
+    emailVerified: user.emailVerified,
+    experience: user.experience,
+    levels: user.levels,
+    coins: user.coins,
+    role: user.role,
+    idCountry: user.idCountry,
   });
-  const data = await res.json();
-  return data as User;
+
+  if (res.ok) {
+    return await res.json();
+  }
+  return null;
 }
 
-export async function updateUser(id: string, user: User): Promise<User> {
-  const res = await fetch(`/backend/api/user/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ user }),
+export async function updateUser(id: string, user: User): Promise<User | null> {
+  const res = await updateUserRequest({
+    id: id,
+    name: user.name || "",
+    email: user.email,
+    emailVerified: user.emailVerified,
+    experience: user.experience,
+    levels: user.levels,
+    coins: user.coins,
+    role: user.role,
+    idCountry: user.idCountry,
   });
-  const data = await res.json();
-  return data as User;
+
+  if (res.ok) {
+    return await res.json();
+  }
+  return null;
 }
 
 export async function deleteUser(id: string): Promise<void> {
-  await fetch(`/backend/api/user/${id}`, {
-    method: "DELETE",
-  });
+  await deleteUserRequest({ id });
 }
