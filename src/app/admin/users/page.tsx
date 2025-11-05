@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { getUsers, createUser, updateUser, deleteUser } from "./controler";
+import getUsersRequest from "@/app/requests/admin/user/getUsers";
+import createUserRequest from "@/app/requests/admin/user/createUser";
+import updateUserRequest from "@/app/requests/admin/user/updateUser";
+import deleteUserRequest from "@/app/requests/admin/user/deleteUser";
+import getCountriesRequest from "@/app/requests/admin/country/getCountries";
 import { User } from "./type";
-import { getCountries } from "../country/controler";
 import { Country } from "../country/type";
 
 export default function Page() {
@@ -24,11 +27,15 @@ export default function Page() {
   const [idCountry, setIdCountry] = useState<number>(0);
 
   useEffect(() => {
-    getUsers().then(setUsers);
-    getCountries().then((data) => {
-      setCountries(data);
-      if (data.length > 0) {
-        setIdCountry(data[0].id_country);
+    getUsersRequest().then((data) => {
+      if (data) setUsers(data);
+    });
+    getCountriesRequest().then((data) => {
+      if (data) {
+        setCountries(data);
+        if (data.length > 0) {
+          setIdCountry(data[0].idCountry);
+        }
       }
     });
   }, []);
@@ -42,7 +49,7 @@ export default function Page() {
     setCoins(0);
     setRole("USER");
     if (countries.length > 0) {
-      setIdCountry(countries[0].id_country);
+      setIdCountry(countries[0].idCountry);
     }
     setShowCreate(true);
   }
@@ -56,7 +63,7 @@ export default function Page() {
     setLevels(user.levels);
     setCoins(user.coins);
     setRole(user.role);
-    setIdCountry(user.id_country);
+    setIdCountry(user.idCountry);
     setShowEdit(true);
   }
 
@@ -64,23 +71,23 @@ export default function Page() {
     e.preventDefault();
     if (!name.trim() || !email.trim()) return;
 
-    const newUser: User = {
+    const response = await createUserRequest({
       id: crypto.randomUUID(),
       name: name.trim(),
       email: email.trim(),
       emailVerified: emailVerified,
-      createdAt: new Date(),
-      updatedAt: new Date(),
       experience: experience,
       levels: levels,
       coins: coins,
       role: role,
-      id_country: idCountry,
-    };
+      idCountry: idCountry,
+    });
 
-    await createUser(newUser);
-
-    setUsers([...users, newUser]);
+    if (response.ok) {
+      // Recharger la liste des utilisateurs
+      const data = await getUsersRequest();
+      if (data) setUsers(data);
+    }
 
     setShowCreate(false);
   }
@@ -98,11 +105,21 @@ export default function Page() {
       levels: levels,
       coins: coins,
       role: role,
-      id_country: idCountry,
+      idCountry: idCountry,
       updatedAt: new Date(),
     };
 
-    await updateUser(editingUser.id, updatedUserData);
+    await updateUserRequest({
+      id: editingUser.id,
+      name: name.trim(),
+      email: email.trim(),
+      emailVerified: emailVerified,
+      experience: experience,
+      levels: levels,
+      coins: coins,
+      role: role,
+      idCountry: idCountry,
+    });
 
     setUsers(users.map((u) => (u.id === editingUser.id ? updatedUserData : u)));
 
@@ -118,7 +135,7 @@ export default function Page() {
   async function confirmDelete() {
     if (!userToDelete) return;
 
-    await deleteUser(userToDelete);
+    await deleteUserRequest({ id: userToDelete });
 
     setUsers(users.filter((u) => u.id !== userToDelete));
 
@@ -354,7 +371,7 @@ export default function Page() {
                   Sélectionnez un pays
                 </option>
                 {countries.map((country) => (
-                  <option key={country.id_country} value={country.id_country}>
+                  <option key={country.idCountry} value={country.idCountry}>
                     {country.name}
                   </option>
                 ))}
@@ -507,7 +524,7 @@ export default function Page() {
               >
                 <option value="">Sélectionner un pays</option>
                 {countries.map((c) => (
-                  <option key={c.id_country} value={c.id_country}>
+                  <option key={c.idCountry} value={c.idCountry}>
                     {c.name}
                   </option>
                 ))}

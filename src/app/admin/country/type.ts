@@ -1,5 +1,5 @@
 export type Country = {
-  id_country: number;
+  idCountry: number;
   name: string;
   image: string;
 };

@@ -1,12 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  getCountries,
-  createCountry,
-  updateCountry,
-  deleteCountry,
-} from "./controler";
+import getCountriesRequest from "@/app/requests/admin/country/getCountries";
+import createCountryRequest from "@/app/requests/admin/country/createCountry";
+import updateCountryRequest from "@/app/requests/admin/country/updateCountry";
+import deleteCountryRequest from "@/app/requests/admin/country/deleteCountry";
 import { Country } from "./type";
 
 export default function Page() {
@@ -20,7 +18,9 @@ export default function Page() {
   const [image, setImage] = useState("");
 
   useEffect(() => {
-    getCountries().then(setCountries);
+    getCountriesRequest().then((data) => {
+      if (data) setCountries(data);
+    });
   }, []);
 
   function openCreate() {
@@ -40,14 +40,16 @@ export default function Page() {
     e.preventDefault();
     if (!name.trim() || !image.trim()) return;
 
-    const newCountry: Omit<Country, "id_country"> = {
+    const response = await createCountryRequest({
       name: name.trim(),
       image: image.trim(),
-    };
+    });
 
-    const createdCountry = await createCountry(newCountry as Country);
-
-    setCountries([...countries, createdCountry]);
+    if (response.ok) {
+      // Recharger la liste des pays
+      const data = await getCountriesRequest();
+      if (data) setCountries(data);
+    }
 
     setShowCreate(false);
   }
@@ -56,20 +58,25 @@ export default function Page() {
     e.preventDefault();
     if (!editingCountry || !name.trim() || !image.trim()) return;
 
-    const updatedCountryData: Country = {
-      id_country: editingCountry.id_country,
+    const response = await updateCountryRequest({
+      idCountry: editingCountry.idCountry,
       name: name.trim(),
       image: image.trim(),
-    };
+    });
 
-    await updateCountry(editingCountry.id_country, updatedCountryData);
-
-    // Mise à jour en local state
-    setCountries(
-      countries.map((c) =>
-        c.id_country === editingCountry.id_country ? updatedCountryData : c
-      )
-    );
+    if (response.ok) {
+      // Mise à jour en local state
+      const updatedCountryData: Country = {
+        idCountry: editingCountry.idCountry,
+        name: name.trim(),
+        image: image.trim(),
+      };
+      setCountries(
+        countries.map((c) =>
+          c.idCountry === editingCountry.idCountry ? updatedCountryData : c
+        )
+      );
+    }
 
     setShowEdit(false);
     setEditingCountry(null);
@@ -83,10 +90,10 @@ export default function Page() {
   async function confirmDelete() {
     if (countryToDelete === null) return;
 
-    await deleteCountry(countryToDelete);
+    await deleteCountryRequest({ idCountry: countryToDelete });
 
     // Mise à jour en local state
-    setCountries(countries.filter((c) => c.id_country !== countryToDelete));
+    setCountries(countries.filter((c) => c.idCountry !== countryToDelete));
 
     setShowDeleteConfirm(false);
     setCountryToDelete(null);
@@ -162,9 +169,9 @@ export default function Page() {
           </thead>
           <tbody>
             {countries.map((c) => (
-              <tr key={c.id_country}>
+              <tr key={c.idCountry}>
                 <td style={{ padding: 8, borderBottom: "1px solid #f3f4f6" }}>
-                  {c.id_country}
+                  {c.idCountry}
                 </td>
                 <td style={{ padding: 8, borderBottom: "1px solid #f3f4f6" }}>
                   {c.name}
@@ -188,7 +195,7 @@ export default function Page() {
                     Modifier
                   </button>
                   <button
-                    onClick={() => handleDeleteCountry(c.id_country)}
+                    onClick={() => handleDeleteCountry(c.idCountry)}
                     style={{
                       backgroundColor: "#ef4444",
                       color: "white",
