@@ -23,6 +23,7 @@ model Country {
 
 model Cosmetic {
   id_cosmetic Int     @id @default(autoincrement())
+  name        String  @db.VarChar(50)
   type        String  @db.VarChar(50)
   price       Int
   image       String  @db.VarChar(255)
@@ -93,7 +94,7 @@ model Course_section {
   order_by          Int
   title             String @db.VarChar(50)
   content           String @db.VarChar(8000)
-  image             String @db.VarChar(50)
+  image             String? @db.VarChar(50)
   id_course         Int
 
   Course   Course     @relation(fields: [id_course], references: [id_course])
