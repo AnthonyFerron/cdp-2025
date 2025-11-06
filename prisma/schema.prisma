@@ -23,6 +23,7 @@ model Country {
 
 model Cosmetic {
   id_cosmetic Int     @id @default(autoincrement())
+  name        String  @db.VarChar(50)
   type        String  @db.VarChar(50)
   price       Int
   image       String  @db.VarChar(255)
@@ -93,13 +94,13 @@ model Course_section {
   order_by          Int
   title             String @db.VarChar(50)
   content           String @db.VarChar(8000)
-  image             String @db.VarChar(50)
+  image             String? @db.VarChar(50)
   id_course         Int
 
   Course   Course     @relation(fields: [id_course], references: [id_course])
   progress progress[]
 
-  @@unique([order_by])
+  @@unique([id_course, order_by])
 }
 
 model Quiz {
@@ -161,10 +162,10 @@ model Quiz_Attempt {
   passed          Boolean
   started_at      DateTime
   completed_at    DateTime
-  user_id         String
+  id_user         String
   id_quiz         Int
 
-  User User @relation(fields: [user_id], references: [id])
+  User User @relation(fields: [id_user], references: [id])
   Quiz Quiz @relation(fields: [id_quiz], references: [id_quiz])
 }
 
@@ -194,26 +195,26 @@ model owned {
 }
 
 model earned {
-  user_id    String
+  id_user    String
   id_badge   Int
   is_equiped Boolean
   earned_at  DateTime
 
-  User  User  @relation(fields: [user_id], references: [id])
+  User  User  @relation(fields: [id_user], references: [id])
   Badge Badge @relation(fields: [id_badge], references: [id_badge])
 
-  @@id([user_id, id_badge])
+  @@id([id_user, id_badge])
 }
 
 model achieved {
-  user_id    String
+  id_user    String
   id_mission Int
-  status     String @db.VarChar(50)
+  is_completed     Boolean
 
-  User    User    @relation(fields: [user_id], references: [id])
+  User    User    @relation(fields: [id_user], references: [id])
   Mission Mission @relation(fields: [id_mission], references: [id_mission])
 
-  @@id([user_id, id_mission])
+  @@id([id_user, id_mission])
 }
 
 model to_gamify {
