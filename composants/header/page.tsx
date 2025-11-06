@@ -9,22 +9,6 @@ export default function Header() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Nouveaux états / refs pour le menu déroulant placé sur "Cours"
-  const [showCoursesMenu, setShowCoursesMenu] = useState(false);
-  const [openSubject, setOpenSubject] = useState<"HTML" | "CSS" | "Python" | null>(null);
-  const coursesRef = useRef<HTMLDivElement>(null);
-
-  // timeout ref to avoid immediate closing when moving mouse to submenu
-  const closeTimeoutRef = useRef<number | null>(null);
-
-  // helper to clear any pending close timeout
-  function clearCloseTimeout() {
-    if (closeTimeoutRef.current !== null) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
-    }
-  }
-
   useEffect(() => {
     // Vérifier si l'utilisateur est connecté
     authClient.getSession().then((session) => {
@@ -48,30 +32,6 @@ export default function Header() {
       };
     }
   }, [showAccountMenu]);
-
-  // Fermer le menu "Cours" si on clique en dehors
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (coursesRef.current && !coursesRef.current.contains(event.target as Node)) {
-        setShowCoursesMenu(false);
-        setOpenSubject(null);
-      }
-    }
-
-    if (showCoursesMenu) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }
-  }, [showCoursesMenu]);
-
-  // cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      clearCloseTimeout();
-    };
-  }, []);
 
   async function handleLogout() {
     await authClient.signOut();
@@ -131,102 +91,14 @@ export default function Header() {
         <img className="h-auto w-[80%]" src="/header/logo.png" alt="logo" />
       </Link>
 
-      {/* Cours avec menu déroulant au survol */}
-      <div
-        ref={coursesRef}
-        className="relative flex items-center justify-center"
-        onMouseEnter={() => {
-          clearCloseTimeout();
-          setShowCoursesMenu(true);
-        }}
-        onMouseLeave={() => {
-          clearCloseTimeout();
-          closeTimeoutRef.current = window.setTimeout(() => {
-            setShowCoursesMenu(false);
-            setOpenSubject(null);
-            closeTimeoutRef.current = null;
-          }, 500);
-        }}
+      {/* Cours (lien simple, menu déroulant supprimé) */}
+      <Link
+        href="/carte"
+        className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
-        <Link
-          href=""
-          className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
-        >
-          <img className="h-auto w-[15%]" src="/header/cours.png" alt="cours" />
-          <span>Mes cours</span>
-        </Link>
-
-        {showCoursesMenu && (
-          <div
-            className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 bg-[#1D1D1D] border-2 border-white rounded-lg shadow-lg z-50 p-2 min-w-[260px]"
-            onMouseEnter={() => { clearCloseTimeout(); }}
-            onMouseLeave={() => {
-              clearCloseTimeout();
-              closeTimeoutRef.current = window.setTimeout(() => {
-                setShowCoursesMenu(false);
-                setOpenSubject(null);
-                closeTimeoutRef.current = null;
-              }, 500);
-            }}
-          >
-            <div className="flex flex-col">
-              {/* HTML */}
-              <div
-                className="relative"
-                onMouseEnter={() => setOpenSubject("HTML")}
-                onMouseLeave={() => setOpenSubject(null)}
-              >
-                <button className="w-full text-left px-4 py-2 text-2xl hover:bg-[#13ADDC] rounded">
-                  HTML
-                </button>
-                {openSubject === "HTML" && (
-                  <div className="absolute top-0 left-full ml-2 bg-[#1D1D1D] border-2 border-white rounded-lg p-2 min-w-[160px]">
-                    <Link href="/html1" className="block px-3 py-1 text-lg hover:bg-gray-700 rounded">Niveau 1</Link>
-                    <Link href="/html2" className="block px-3 py-1 text-lg hover:bg-gray-700 rounded">Niveau 2</Link>
-                    <Link href="/html3" className="block px-3 py-1 text-lg hover:bg-gray-700 rounded">Niveau 3</Link>
-                  </div>
-                )}
-              </div>
-
-              {/* CSS */}
-              <div
-                className="relative"
-                onMouseEnter={() => setOpenSubject("CSS")}
-                onMouseLeave={() => setOpenSubject(null)}
-              >
-                <button className="w-full text-left px-4 py-2 text-2xl hover:bg-[#13ADDC] rounded">
-                  CSS
-                </button>
-                {openSubject === "CSS" && (
-                  <div className="absolute top-0 left-full ml-2 bg-[#1D1D1D] border-2 border-white rounded-lg p-2 min-w-[160px]">
-                    <Link href="/css1" className="block px-3 py-1 text-lg hover:bg-gray-700 rounded">Niveau 1</Link>
-                    <Link href="/css2" className="block px-3 py-1 text-lg hover:bg-gray-700 rounded">Niveau 2</Link>
-                    <Link href="/css3" className="block px-3 py-1 text-lg hover:bg-gray-700 rounded">Niveau 3</Link>
-                  </div>
-                )}
-              </div>
-
-              {/* Python */}
-              <div
-                className="relative"
-                onMouseEnter={() => setOpenSubject("Python")}
-                onMouseLeave={() => setOpenSubject(null)}
-              >
-                <button className="w-full text-left px-4 py-2 text-2xl hover:bg-[#13ADDC] rounded">
-                  Python
-                </button>
-                {openSubject === "Python" && (
-                  <div className="absolute top-0 left-full ml-2 bg-[#1D1D1D] border-2 border-white rounded-lg p-2 min-w-[160px]">
-                    <Link href="/python1" className="block px-3 py-1 text-lg hover:bg-gray-700 rounded">Niveau 1</Link>
-                    <Link href="/python2" className="block px-3 py-1 text-lg hover:bg-gray-700 rounded">Niveau 2</Link>
-                    <Link href="/python3" className="block px-3 py-1 text-lg hover:bg-gray-700 rounded">Niveau 3</Link>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+        <img className="h-auto w-[15%]" src="/header/cours.png" alt="cours" />
+        <span>Mes cours</span>
+      </Link>
 
       {/* Missions (simple link désormais) */}
       <Link
@@ -239,7 +111,7 @@ export default function Header() {
       </Link>
 
       <Link
-        href="/shop"
+        href="/boutique"
         className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
         <img className="h-auto w-[15%]" src="/header/boutique.png" alt="boutique" />

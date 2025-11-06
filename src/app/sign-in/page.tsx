@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { FooterMini } from "../../../composants/footer/page";
 import Header from "../../../composants/header/page";
 
 export default function SignInPage() {
@@ -101,6 +102,7 @@ export default function SignInPage() {
           </div>
         </form>
       </div>
+      <FooterMini />
     </div>
   );
 }
