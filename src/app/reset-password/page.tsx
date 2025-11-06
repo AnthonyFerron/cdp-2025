@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useSearchParams } from "next/navigation";
-import Header from "../../../composants/page";
+import Header from "../../../composants/header/page";
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState("");
