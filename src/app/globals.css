@@ -9,3 +9,15 @@
 .pixelated-rendering {
   image-rendering: pixelated;
 }
+
+body, h1, h2, h3, h4, h5, h6, p, label {
+  cursor: url('../../public/cursor/normal.png'), auto;
+}
+
+a, button {
+  cursor: url('../../public/cursor/pointer.png'), pointer;
+}
+
+input, textarea {
+  cursor: url('../../public/cursor/text.png'), text;
+}
