@@ -100,7 +100,7 @@ model Course_section {
   Course   Course     @relation(fields: [id_course], references: [id_course])
   progress progress[]
 
-  @@unique([order_by])
+  @@unique([id_course, order_by])
 }
 
 model Quiz {
