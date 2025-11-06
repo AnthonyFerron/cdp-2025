@@ -3,9 +3,14 @@ import { IdCountry, IdUser } from "../types/custom.types";
 import UserTransformer from "../models/user/userTransformer";
 import { GetUserWithIdBusinessLogicError } from "../errors/businessLogic/userBusinessLogicError";
 import { User } from "../models/user/user.model";
+import UserLevelCalculator from "../services/userLevelCalculator";
 
 export default class UserBusinessLogic {
-  constructor(private readonly userCrud: UserCrud) {}
+  private readonly levelCalculator: UserLevelCalculator;
+
+  constructor(private readonly userCrud: UserCrud) {
+    this.levelCalculator = new UserLevelCalculator();
+  }
 
   async createUser(
     id: IdUser,
@@ -70,5 +75,39 @@ export default class UserBusinessLogic {
   async getUsers(): Promise<User[]> {
     const usersDb = await this.userCrud.getUsers();
     return usersDb.map((user) => UserTransformer.DbToApi(user));
+  }
+
+  async addCoinsToUser(id: IdUser, coinsToAdd: number) {
+    await this.userCrud.addCoinsToUser(id, coinsToAdd);
+  }
+
+  async addExperienceToUser(id: IdUser, experienceToAdd: number) {
+    await this.userCrud.addExperienceToUser(id, experienceToAdd);
+  }
+
+  async calculateAndUpdateLevel(id: IdUser): Promise<{
+    hasLeveledUp: boolean;
+    newLevel: number;
+    levelsGained: number;
+    xpForNextLevel: number;
+    xpProgress: number;
+    xpNeededForNextLevel: number;
+    progressPercentage: number;
+  }> {
+    // Récupérer l'utilisateur
+    const user = await this.getUserWithId(id);
+
+    // Calculer le niveau basé sur l'XP
+    const levelInfo = this.levelCalculator.checkLevelUp(
+      user.levels,
+      user.experience
+    );
+
+    // Si level up, mettre à jour le niveau en base
+    if (levelInfo.hasLeveledUp) {
+      await this.userCrud.updateUserLevel(id, levelInfo.newLevel);
+    }
+
+    return levelInfo;
   }
 }
