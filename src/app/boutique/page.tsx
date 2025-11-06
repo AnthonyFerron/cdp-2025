@@ -11,7 +11,7 @@ import { authClient } from "@/lib/auth-client";
 import { IdCosmetic } from "../types/custom.types";
 
 export default function Accueil() {
-  const [active, setActive] = useState<"avatars" | "banners">("banners");
+  const [active, setActive] = useState<"avatars" | "banners">("avatars");
   const [modalOpen, setModalOpen] = useState(false);
   const [selected, setSelected] = useState<Cosmetic | null>(null);
   const [cosmetics, setCosmetics] = useState<Cosmetic[]>([]);
@@ -74,6 +74,23 @@ export default function Accueil() {
     return ownedCosmetics.some((owned) => owned.idCosmetic === idCosmetic);
   };
 
+  // Fonction pour obtenir le bon chemin d'image
+  const getImagePath = (imagePath: string) => {
+    // Si le chemin commence par /public/, on l'enlève car Next.js sert les fichiers depuis /public/ à la racine
+    if (imagePath.startsWith("/public/")) {
+      return imagePath.replace("/public/", "/");
+    }
+    // Si le chemin commence par public/ (sans /), on l'enlève aussi
+    if (imagePath.startsWith("public/")) {
+      return "/" + imagePath.replace("public/", "");
+    }
+    // Si le chemin ne commence pas par /, on l'ajoute
+    if (!imagePath.startsWith("/")) {
+      return "/" + imagePath;
+    }
+    return imagePath;
+  };
+
   // Gérer l'achat
   const handlePurchase = async () => {
     if (!selected || !userId) return;
@@ -104,10 +121,15 @@ export default function Accueil() {
         }, 2000);
       } else {
         setError(result.message || "Erreur lors de l'achat");
+        setTimeout(() => {
+          setError("");
+        }, 4000);
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
       setError("Erreur lors de l'achat");
+      setTimeout(() => {
+        setError("");
+      }, 4000);
     } finally {
       setPurchasing(false);
     }
@@ -126,27 +148,20 @@ export default function Accueil() {
   }
 
   return (
-    <div className="bg-[#2D2D2D] h-screen font-[silkscreen]">
+    <div className="bg-[#2D2D2D] min-h-screen font-[silkscreen]">
       <Header />
 
       {/* Afficher les messages */}
       {message && (
-        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded z-50">
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-center font-bold">
           {message}
         </div>
       )}
       {error && (
-        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded z-50">
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-center font-bold max-w-md">
           {error}
         </div>
       )}
-
-      {/* Afficher les coins de l'utilisateur */}
-      <div className="text-white text-center mt-4 flex items-center justify-center gap-2">
-        <span className="text-2xl">Vos coins:</span>
-        <span className="text-2xl font-bold">{userCoins}</span>
-        <Image src="/header/coins.png" alt="coins" width={30} height={30} />
-      </div>
 
       <div className="w-full grid grid-cols-2 text-5xl mt-10">
         <button
@@ -173,14 +188,14 @@ export default function Accueil() {
 
       {/* Avatars */}
       <div
-        className={`${active === "avatars" ? "grid" : "hidden"} grid-cols-2 pt-16 gap-y-10`}
+        className={`${active === "avatars" ? "grid" : "hidden"} grid-cols-3 gap-8 px-8 pt-16 pb-16 max-w-7xl mx-auto`}
       >
         {avatars.map((cosmetic) => {
           const owned = isOwned(cosmetic.idCosmetic);
           return (
             <div
               key={cosmetic.idCosmetic}
-              className="mx-auto w-fit"
+              className="mx-auto w-full"
               onClick={() => {
                 if (!owned) {
                   setSelected(cosmetic);
@@ -190,32 +205,30 @@ export default function Accueil() {
             >
               <div className="relative">
                 <Image
-                  className={`rounded-lg ${owned ? "opacity-50" : "cursor-pointer"}`}
-                  src={`/${cosmetic.image}`}
+                  className={`rounded-lg w-full h-auto ${owned ? "opacity-50" : "cursor-pointer hover:scale-105 transition-transform"}`}
+                  src={getImagePath(cosmetic.image)}
                   alt={cosmetic.name}
-                  width={200}
-                  height={200}
+                  width={300}
+                  height={300}
                 />
-                {owned && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-green-500 text-2xl font-bold">
-                      ✓ Possédé
-                    </span>
+              </div>
+              <div className="flex justify-between items-center text-white mt-4">
+                <p className="text-xl font-bold">{cosmetic.name}</p>
+                {owned ? (
+                  <p className="text-lg font-bold text-gray-500">Possédé</p>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <p className="text-2xl font-bold text-yellow-400">
+                      {cosmetic.price}
+                    </p>
+                    <Image
+                      src="/header/coins.png"
+                      alt="coins"
+                      width={32}
+                      height={32}
+                    />
                   </div>
                 )}
-              </div>
-              <div className="grid grid-cols-2 text-white">
-                <p>{cosmetic.name}</p>
-                <div className="inline text-right">
-                  <p className="inline">{cosmetic.price}</p>
-                  <Image
-                    className="inline ml-1"
-                    src="/header/coins.png"
-                    alt="coins"
-                    width={20}
-                    height={20}
-                  />
-                </div>
               </div>
             </div>
           );
@@ -224,14 +237,14 @@ export default function Accueil() {
 
       {/* Bannières */}
       <div
-        className={`${active === "banners" ? "grid" : "hidden"} grid-cols-2 pt-16 gap-y-10`}
+        className={`${active === "banners" ? "grid" : "hidden"} grid-cols-3 gap-8 px-8 pt-16 pb-16 max-w-7xl mx-auto`}
       >
         {banners.map((cosmetic) => {
           const owned = isOwned(cosmetic.idCosmetic);
           return (
             <div
               key={cosmetic.idCosmetic}
-              className="mx-auto w-fit"
+              className="mx-auto w-full"
               onClick={() => {
                 if (!owned) {
                   setSelected(cosmetic);
@@ -241,32 +254,30 @@ export default function Accueil() {
             >
               <div className="relative">
                 <Image
-                  className={`rounded-lg ${owned ? "opacity-50" : "cursor-pointer"}`}
-                  src={`/${cosmetic.image}`}
+                  className={`rounded-lg w-full h-auto ${owned ? "opacity-50" : "cursor-pointer hover:scale-105 transition-transform"}`}
+                  src={getImagePath(cosmetic.image)}
                   alt={cosmetic.name}
-                  width={200}
-                  height={200}
+                  width={300}
+                  height={300}
                 />
-                {owned && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-green-500 text-2xl font-bold">
-                      ✓ Possédé
-                    </span>
+              </div>
+              <div className="flex justify-between items-center text-white mt-4">
+                <p className="text-xl font-bold">{cosmetic.name}</p>
+                {owned ? (
+                  <p className="text-lg font-bold text-gray-500">Possédé</p>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <p className="text-2xl font-bold text-yellow-400">
+                      {cosmetic.price}
+                    </p>
+                    <Image
+                      src="/header/coins.png"
+                      alt="coins"
+                      width={32}
+                      height={32}
+                    />
                   </div>
                 )}
-              </div>
-              <div className="grid grid-cols-2 text-white">
-                <p>{cosmetic.name}</p>
-                <div className="inline text-right">
-                  <p className="inline">{cosmetic.price}</p>
-                  <Image
-                    className="inline ml-1"
-                    src="/header/coins.png"
-                    alt="coins"
-                    width={20}
-                    height={20}
-                  />
-                </div>
               </div>
             </div>
           );

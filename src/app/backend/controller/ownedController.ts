@@ -18,7 +18,8 @@ export default class OwnedController {
 
   async purchaseCosmetic(req: Request) {
     try {
-      const { idCosmetic }: OwnedPurchaseDto = await req.json();
+      const body = await req.json();
+      const { idCosmetic }: OwnedPurchaseDto = body;
       const userId = new URL(req.url).searchParams.get("userId");
 
       if (
@@ -40,8 +41,6 @@ export default class OwnedController {
         });
       }
     } catch (err) {
-      console.error(err);
-
       if (err instanceof InsufficientCoinsBusinessLogic) {
         return new NextResponse("Vous n'avez pas assez de coins", {
           status: 400,
@@ -77,8 +76,7 @@ export default class OwnedController {
           status: 400,
         });
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
       return new NextResponse("Erreur serveur", { status: 500 });
     }
   }
@@ -108,8 +106,6 @@ export default class OwnedController {
         });
       }
     } catch (err) {
-      console.error(err);
-
       if (err instanceof CosmeticNotFoundBusinessLogic) {
         return new NextResponse("Vous ne possédez pas ce cosmétique", {
           status: 404,
@@ -145,8 +141,6 @@ export default class OwnedController {
         });
       }
     } catch (err) {
-      console.error(err);
-
       if (err instanceof CosmeticNotFoundBusinessLogic) {
         return new NextResponse("Vous ne possédez pas ce cosmétique", {
           status: 404,

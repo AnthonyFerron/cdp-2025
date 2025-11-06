@@ -26,8 +26,7 @@ export default async function equipCosmetic(
         message: (await res.text()) || "Erreur lors de l'équipement",
       };
     }
-  } catch (err) {
-    console.error(err);
+  } catch {
     return { success: false, message: "Erreur lors de l'équipement" };
   }
 }

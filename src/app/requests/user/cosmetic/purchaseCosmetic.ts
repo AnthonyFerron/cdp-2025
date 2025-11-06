@@ -16,18 +16,17 @@ export default async function purchaseCosmetic(
       body: JSON.stringify({ idCosmetic }),
     });
 
-    const data = await res.json();
-
     if (res.ok) {
+      const data = await res.json();
       return { success: true, message: data.message };
     } else {
+      const errorMessage = await res.text();
       return {
         success: false,
-        message: (await res.text()) || "Erreur lors de l'achat",
+        message: errorMessage || "Erreur lors de l'achat",
       };
     }
-  } catch (err) {
-    console.error(err);
+  } catch {
     return { success: false, message: "Erreur lors de l'achat" };
   }
 }
