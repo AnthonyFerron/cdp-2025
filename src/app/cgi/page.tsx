@@ -16,7 +16,7 @@ const handjet = Handjet({
 
 export default function CGU() {
   return (
-    <main className="min-h-screen bg-[#0a0a0f] text-white px-8 py-12">
+<main className="min-h-screen bg-[#0a0a0f] text-white px-12 py-16 font-handjet [&_p]:text-[20px] [&_li]:text-[20px] [&_span:not(h1,h2,h3)]:text-[20px]">
       <div className="max-w-4xl mx-auto">
         {/* Titre principal */}
         <h1
