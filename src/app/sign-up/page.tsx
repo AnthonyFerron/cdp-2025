@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { authClient } from "@/lib/auth-client";
-import Header from "../../../composants/page";
+import Header from "../../../composants/header/page";
 
 type Country = {
   id_country: number;

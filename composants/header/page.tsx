@@ -46,7 +46,7 @@ export default function Header() {
           href="/"
           className="flex items-center justify-center cursor-pointer"
         >
-          <img className="h-auto w-[40%]" src="/logo.png" alt="logo" />
+          <img className="h-auto w-[40%]" src="/header/logo.png" alt="logo" />
         </Link>
         <div></div>
       </div>
@@ -61,7 +61,7 @@ export default function Header() {
           href="/"
           className="flex items-center justify-center cursor-pointer"
         >
-          <img className="h-auto w-[40%]" src="/logo.png" alt="logo" />
+          <img className="h-auto w-[40%]" src="header/logo.png" alt="logo" />
         </Link>
         <div className="flex items-center justify-center gap-4">
           <Link
@@ -96,27 +96,27 @@ export default function Header() {
         href="/"
         className="flex items-center justify-center cursor-pointer"
       >
-        <img className="h-auto w-[80%]" src="/logo.png" alt="logo" />
+        <img className="h-auto w-[80%]" src="/header/logo.png" alt="logo" />
       </Link>
       <Link
         href="/cours"
         className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
-        <img className="h-auto w-[15%]" src="/cours.png" alt="cours" />
+        <img className="h-auto w-[15%]" src="/header/cours.png" alt="cours" />
         <span>Mes cours</span>
       </Link>
       <Link
         href="/missions"
         className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
-        <img className="h-auto w-[15%]" src="/missions.png" alt="missions" />
+        <img className="h-auto w-[15%]" src="/header/missions.png" alt="missions" />
         <span>Missions</span>
       </Link>
       <Link
         href="/shop"
         className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
-        <img className="h-auto w-[15%]" src="/boutique.png" alt="boutique" />
+        <img className="h-auto w-[15%]" src="/header/boutique.png" alt="boutique" />
         <span>Boutique</span>
       </Link>
       <div className="relative flex items-center justify-center" ref={menuRef}>
@@ -124,7 +124,7 @@ export default function Header() {
           onClick={() => setShowAccountMenu(!showAccountMenu)}
           className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
         >
-          <img className="h-auto w-[15%]" src="/compte.png" alt="compte" />
+          <img className="h-auto w-[15%]" src="/header/compte.png" alt="compte" />
           <span>Mon Compte</span>
         </button>
 
@@ -149,3 +149,4 @@ export default function Header() {
     </div>
   );
 }
+  

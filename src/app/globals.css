@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @font-face {
   font-family: 'silkscreen';
-  src: url('../../public/Silkscreen-Regular.ttf') format('truetype');
+  src: url('../../public/polices/Silkscreen-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
