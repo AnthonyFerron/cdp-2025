@@ -145,19 +145,13 @@ export default function Accueil() {
               <p className="mb-6">Voulez-vous confirmer l'achat de <span className="font-bold">{selected}</span> ?</p>
               <div className="grid grid-cols-2 w-full">
                 <button
-                  className="text-black w-[80%] text-center cursor-pointer transition-all bg-[#dadce7] py-2 rounded-lg
-border-[#747587]
-border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
-active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+                  className="w-[80%] text-center outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:mt-0.5"
                   onClick={() => { setModalOpen(false); setSelected(null); }}
                 >
                   Annuler
                 </button>
                 <button
-                  className="text-black cursor-pointer transition-all bg-[#dadce7] py-2 rounded-lg
-border-[#747587]
-border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
-active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+                  className="outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:mt-0.5 px-5"
                   onClick={() => { setModalOpen(false); setSelected(null); }}
                 >
                   Confirmer
