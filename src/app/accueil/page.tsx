@@ -1,40 +1,104 @@
 "use client";
-import Header from "@/composants/header/header";
+import { FooterMini } from "../../../composants/footer/page";
+import { HeaderMini } from "../../../composants/header/page";
 
-
-export default function Accueil() {
-
+export default function SignInPage() {
   return (
-    <div>
-      <Header />
-      <div className="relative w-full h-[100%] bg-[url('/bg1.png')] bg-cover bg-center pb-2 pt-4">
-        <div className="w-[75%] mx-auto text-center m-4 p-2 rounded-[15px] bg-[#121010] border-[#FAF2EA] border-2">
-          <h1 className="md:text-7xl text-[#13ADDC] border-b-1 ">GamiCode</h1>
-          <p className="md:text-3xl text-[#8BF37B]">Bienvenue sur Gamicode, le site d’apprentissage pour maîtriser HTML, CSS et Python à ton rythme.</p>
-          <a className="md:text-2xl text-[#13ADDC] border-2 rounded-[15px] p-1" href="#">Commencer dès maintenant</a>
-        </div>
-        <div className="md:grid grid-cols-3 w-[75%] mx-auto">
-          <div className="text-center m-4 p-2 rounded-[15px] bg-[#121010] border-[#FAF2EA] border-2">
-            <h1 className="md:text-4xl text-[#13ADDC] border-b-1 ">Nombre de langages appris</h1>
-            <p className="md:text-3xl text-[#8BF37B] mt-2">Tu apprends 3 langages essentiels : HTML, CSS et Python. Ce trio te permet de construire des pages web complètes, de les styliser de façon professionnelle, puis d'ajouter de la logique et des scripts intelligents pour automatiser des tâches ou créer des mini-programmes.</p>
-          </div>
-          <div className="text-center m-4 p-2 rounded-[15px] bg-[#121010] border-[#FAF2EA] border-2">
-            <h1 className="md:text-4xl text-[#13ADDC] border-b-1 ">Nombre d'exercices</h1>
-            <p className="md:text-3xl text-[#8BF37B] mt-2">Tu as accès à plusieurs exercices pratiques, conçus pour progresser étape par étape. Ces défis te permettent de pratiquer régulièrement, d’améliorer ta logique de code et de renforcer tes compétences en programmation tout en construisant des projets concrets.</p>
-          </div>
-          <div className="text-center m-4 p-2 rounded-[15px] bg-[#121010] border-[#FAF2EA] border-2">
-            <h1 className="md:text-4xl text-[#13ADDC] border-b-1 ">Nombre d'utilisateurs</h1>
-            <p className="md:text-3xl text-[#8BF37B] mt-2">Rejoins une communauté de plus de 10 000 apprenants actifs qui progressent chaque jour dans l’apprentissage du développement web et de Python.Que tu sois débutant ou déjà passionné par le code, tu apprends aux côtés d’autres utilisateurs motivés, partageant leurs questions, leurs projets et leurs réussites, pour avancer ensemble dans la logique et la pratique du programmation</p>
-          </div>
-        </div>
-        <div className="grid grid-cols-5 text-white text-center text-xs mx-12">
-          <a className="md:text-3xl" href="">Contact</a>
-          <a className="md:text-3xl" href="">Mon profil</a>
-          <a className="md:text-3xl" href="">CGV</a>
-          <a className="md:text-3xl" href="">CGU</a>
-          <a className="md:text-3xl" href="">Confidentialité</a>
+    <div className="bg-[#1D1D1D] min-h-screen text-white font-[silkscreen]">
+      <HeaderMini />
+
+      {/* Section bannière */}
+      <div className="relative bg-[url('/bg2.jpg')] bg-cover bg-center py-16 px-8 text-center">
+        <img src="logo.png" alt="logo" className="mx-auto w-1/3 mb-6" />
+        <p className="text-lg sm:text-2xl font-light max-w-3xl mx-auto mb-12">
+          Bienvenue sur <span className="font-bold">GamiCode</span>, le site
+          d’apprentissage pour maîtriser{" "}
+          <span className="">HTML</span>,{" "}
+          <span className="">CSS</span> et{" "}
+          <span className="">Python</span> à ton rythme.
+        </p>
+
+        {/* Bouton sur la bannière */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-6">
+          <a
+            href="/sign-in"
+            className="inline-block bg-black border border-white px-8 py-3 rounded-md hover:bg-white hover:text-black transition"
+          >
+            COMMENCER DÈS MAINTENANT
+          </a>
         </div>
       </div>
+
+      {/* Section principale */}
+      <div className="grid md:grid-cols-2 gap-16 px-8 py-20">
+        {/* Langages */}
+        <div className="flex justify-center items-center">
+          <img className="w-1/2" src="langages.png" alt="langages" />
+        </div>
+        <div className="bg-[#FFFFFF] text-black rounded-2xl p-10 shadow-xl border border-gray-300 relative overflow-hidden">
+          <div className="flex justify-center mb-6">
+            <h2 className="bg-[#E5E7EB] border-2 border-black rounded-md px-6 py-2 text-lg font-bold uppercase shadow-md">
+              DES LANGAGES ESSENTIELS
+            </h2>
+          </div>
+          <p className="leading-relaxed text-justify text-lg">
+            Vous apprenez trois langages essentiels : HTML, CSS et Python. Ils
+            vous permettent de créer des pages web complètes, de les styliser
+            avec professionnalisme et d’y ajouter de la logique pour automatiser
+            ou développer des mini-programmes.
+          </p>
+        </div>
+
+        {/* Exercices réels */}
+        <div className="bg-white text-black rounded-2xl p-10 shadow-xl border border-gray-300 relative overflow-hidden">
+          <div className="flex justify-center mb-6">
+            <h2 className="bg-[#E5E7EB] border-2 border-black rounded-md px-6 py-2 text-lg font-bold uppercase shadow-md">
+              DES EXERCICES RÉELS
+            </h2>
+          </div>
+          <p className="leading-relaxed text-justify text-lg">
+            Vous avez accès à plusieurs exercices pratiques conçus pour vous
+            faire progresser pas à pas. Ces défis vous permettent d’améliorer
+            votre logique, de renforcer vos compétences en programmation et de
+            créer des projets concrets.
+          </p>
+        </div>
+        <div className="bg-[#13ADDC] text-black rounded-2xl p-10 shadow-xl border border-gray-300 relative overflow-hidden">
+          <img className="w-2/2" src="component.png" alt="component" />
+        </div>
+
+        {/* Progression */}
+        <div className="flex justify-center items-center">
+          <img className="w-1/2" src="aliens.png" alt="aliens" />
+        </div>
+        <div className="bg-white text-black rounded-2xl p-10 shadow-xl border border-gray-300 relative overflow-hidden">
+          <div className="flex justify-center mb-6">
+            <h2 className="bg-[#E5E7EB] border-2 border-black rounded-md px-6 py-2 text-lg font-bold uppercase shadow-md">
+              UNE PROGRESSION LINÉAIRE
+            </h2>
+          </div>
+          <p className="leading-relaxed text-justify text-lg">
+            Rejoignez une communauté active qui progresse chaque jour dans
+            l’apprentissage du développement web/Python. Que vous soyez
+            débutant ou déjà passionné, vous apprendrez aux côtés d’autres
+            membres motivés, partageant leurs projets, leurs questions et leurs
+            réussites pour progresser ensemble dans la programmation.
+          </p>
+        </div>
+      </div>
+
+      {/* Bouton final */}
+      <div className="text-center py-12">
+        <a
+          href="/sign-in"
+          className="inline-block bg-white text-black border-2 border-black px-8 py-3 rounded-lg hover:bg-black hover:text-white transition"
+        >
+          COMMENCER DÈS MAINTENANT
+        </a>
+         <FooterMini />
+      </div>
+  
     </div>
+    
   );
 }

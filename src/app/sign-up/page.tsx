@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
-import Header from "../../../composants/page";
+import Header from "../../../composants/header/page";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");

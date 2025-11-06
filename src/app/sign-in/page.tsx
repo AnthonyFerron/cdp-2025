@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
-import Header from "../../../composants/page";
+import { FooterMini } from "../../../composants/footer/page";
+import { HeaderMini } from "../../../composants/header/page";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -20,7 +21,7 @@ export default function SignInPage() {
 
   return (
     <div>
-      <Header />
+      <HeaderMini />
       <div className="bg-[#1D1D1D] p-10 font-[silkscreen] min-h-screen flex flex-col items-center justify-center gap-8">
         <h1 className="bg-white text-center max-w-md w-full text-[48px] p-4 rounded-lg">Se connecter</h1>
 
@@ -44,7 +45,7 @@ export default function SignInPage() {
             <span className="text-white text-xl">Pas de compte ? </span>
             <a className="text-blue-600 text-xl" href="/sign-up">Inscrivez-vous</a>
           </div>
-          <button type="submit" className="text-2xl border p-4 w-full bg-white rounded-lg mt-4">
+          <button type="submit" className="w-[50%] text-black text-2xl border p-4 w-full bg-white rounded-lg mt-4">
             Connexion
           </button>
           <div className="text-center">
@@ -53,6 +54,7 @@ export default function SignInPage() {
           </div>
         </form>
       </div>
+      <FooterMini />
     </div>
   );
 }
