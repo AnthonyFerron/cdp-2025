@@ -33,7 +33,7 @@ export default function SignInPage() {
       <div className="grid md:grid-cols-2 gap-16 px-8 py-20">
         {/* Langages */}
         <div className="flex justify-center items-center">
-          <img className="w-1/2" src="langages.png" alt="langages" />
+          <img className="w-1/4" src="langages.png" alt="langages" />
         </div>
         <div className="bg-[#FFFFFF] text-black rounded-2xl p-10 shadow-xl border border-gray-300 relative overflow-hidden">
           <div className="flex justify-center mb-6">
@@ -88,10 +88,10 @@ export default function SignInPage() {
       </div>
 
       {/* Bouton final */}
-      <div className="text-center py-12">
+      <div className="text-center">
         <a
           href="/sign-in"
-          className="inline-block bg-white text-black border-2 border-black px-8 py-3 rounded-lg hover:bg-black hover:text-white transition"
+          className="inline-block bg-white text-black border-2 border-black px-8 py-3 rounded-lg hover:bg-black hover:text-white transition mb-4"
         >
           COMMENCER DÈS MAINTENANT
         </a>
