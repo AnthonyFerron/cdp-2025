@@ -5,11 +5,11 @@ import Header from "../../../composants/header/page";
 export default function SignInPage() {
   return (
     <div className="bg-[#1D1D1D] min-h-screen text-white font-[silkscreen]">
-      <HeaderMini />
+      <Header />
 
       {/* Section bannière */}
       <div className="relative bg-[url('/bg2.jpg')] bg-cover bg-center py-16 px-8 text-center">
-        <img src="logo.png" alt="logo" className="mx-auto w-1/3 mb-6" />
+        <img src="/header/logo.png" alt="logo" className="mx-auto w-1/3 mb-6" />
         <p className="text-lg sm:text-2xl font-light max-w-3xl mx-auto mb-12">
           Bienvenue sur <span className="font-bold">GamiCode</span>, le site
           d’apprentissage pour maîtriser{" "}
