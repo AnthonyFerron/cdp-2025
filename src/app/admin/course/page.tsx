@@ -228,24 +228,27 @@ export default function CoursePage() {
 			<div className="border-t border-gray-200 pt-6 space-y-4">
 			{courses.map((course) => (
 				<div
-				key={course.idCourse}
-				className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 transition"
+					key={course.idCourse}
+					className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 transition"
 				>
-				<p className="text-gray-800 font-medium">{course.title}</p>
-				<div className="flex gap-3">
-					<button
-					onClick={() => editCourse(course.idCourse)}
-					className="px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-					>
-					Edit Course
-					</button>
-					<button
-					onClick={() => editCourseSections(course.idCourse)}
-					className="px-4 py-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
-					>
-					Edit Sections
-					</button>
-				</div>
+					<p className="text-gray-800 font-medium">{course.title}</p>
+					<p className="text-gray-800 font-medium">IdCourse = {course.idCourse}</p>
+
+					<div className="flex gap-3">
+						<button
+							onClick={() => editCourse(course.idCourse)}
+							className="px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+						>
+							Edit Course
+						</button>
+						
+						<button
+							onClick={() => editCourseSections(course.idCourse)}
+							className="px-4 py-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+						>
+							Edit Sections
+						</button>
+					</div>
 				</div>
 			))}
 			</div>

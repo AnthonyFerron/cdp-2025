@@ -5,3 +5,5 @@ export type IdBadge = number & { _type: 'IdBadge' }
 export type IdLanguage = number & { _type: 'IdLanguage' }
 export type IdCourse = number & { _type: 'IdCourse' }
 export type IdCourseSection = number & { _type: 'IdCourseSection' }
+export type IdQuiz = number & { _type: 'IdQuiz' }
+export type IdQuizQuestion = number & { _type: 'IdQuizQuestion' }
