@@ -9,6 +9,7 @@ import { Cosmetic } from "../models/cosmetic.model";
 import { Owned } from "../models/owned.model";
 import { authClient } from "@/lib/auth-client";
 import { IdCosmetic } from "../types/custom.types";
+import { FooterMini } from "../../../composants/footer/page";
 
 export default function Accueil() {
   const [active, setActive] = useState<"avatars" | "banners">("avatars");
@@ -268,7 +269,7 @@ export default function Accueil() {
           );
         })}
       </div>
-
+      
       {modalOpen && selected && (
         <div>
           <div className="fixed inset-0 flex items-center justify-center z-50 text-black">
@@ -314,6 +315,7 @@ export default function Accueil() {
           </div>
         </div>
       )}
+      <FooterMini />
     </div>
   );
 }
