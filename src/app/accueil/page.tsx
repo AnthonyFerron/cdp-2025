@@ -1,5 +1,5 @@
 "use client";
-import Header from "@/composants/header/header";
+import Header from "../../../composants/header/page";
 
 
 export default function Accueil() {
