@@ -191,6 +191,60 @@ export default function Profil() {
             ›
           </button>
         </div>
+        <div className="flex items-center justify-center gap-4 p-6">
+          <button
+            onClick={prev}
+            aria-label="Précédent"
+            disabled={selectedIndex === 0}
+            className="text-4xl px-3 py-1 bg-[#DADCE7] text-black rounded disabled:opacity-40"
+          >
+            ‹
+          </button>
+
+          <div className="flex overflow-hidden w-[80%] justify-center">
+            <div className="flex gap-6 w-full justify-center">
+              {/*
+                Afficher toujours 3 "slots" : gauche, centre (selectedIndex), droite.
+                Si on est en bord, on insère un placeholder pour conserver le centre.
+              */}
+              {[selectedIndex - 1, selectedIndex, selectedIndex + 1].map((i, slotIdx) => {
+                if (i === undefined || i < 0 || i >= banners.length) {
+                  // placeholder (vide) pour garder l'image sélectionnée au centre aux extrémités
+                  return (
+                    <div key={`ph-${slotIdx}`} className="w-1/3 flex items-center justify-center">
+                      <div className="max-h-40 w-full" />
+                    </div>
+                  );
+                }
+
+                const src = banners[i];
+                const isSelected = i === selectedIndex;
+                return (
+                  <div key={src} className="w-1/3 flex items-center justify-center">
+                    <img
+                      src={src}
+                      alt={`Bannière ${i + 1}`}
+                      onClick={() => setSelectedIndex(i)}
+                      className={
+                        "max-h-40 object-contain cursor-pointer" +
+                        (isSelected ? "scale-110" : "")
+                      }
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <button
+            onClick={next}
+            aria-label="Suivant"
+            disabled={selectedIndex === banners.length - 1}
+            className="text-4xl px-3 py-1 bg-[#DADCE7] text-black rounded disabled:opacity-40"
+          >
+            ›
+          </button>
+        </div>
         <div className="text-center">
           <button
             className="text-3xl"
