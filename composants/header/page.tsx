@@ -7,14 +7,30 @@ export default function Header() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const [userCoins, setUserCoins] = useState<number>(0);
+  const [userLevel, setUserLevel] = useState<number>(0);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Vérifier si l'utilisateur est connecté
-    authClient.getSession().then((session) => {
+    const fetchUserData = async () => {
+      const session = await authClient.getSession();
       setIsAuthenticated(!!session.data);
+
+      if (session.data?.user) {
+        const userRes = await fetch(
+          `/backend/api/user/${session.data.user.id}`
+        );
+        if (userRes.ok) {
+          const userData = await userRes.json();
+          setUserCoins(userData.coins || 0);
+          setUserLevel(userData.levels || 0);
+        }
+      }
+
       setIsLoading(false);
-    });
+    };
+
+    fetchUserData();
   }, []);
 
   // Fermer le menu compte si on clique en dehors
@@ -105,7 +121,11 @@ export default function Header() {
         href="/missions"
         className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
-        <img className="h-auto w-[15%]" src="/header/missions.png" alt="missions" />
+        <img
+          className="h-auto w-[15%]"
+          src="/header/missions.png"
+          alt="missions"
+        />
         <span>Missions</span>
         <span>(1/3)</span>
       </Link>
@@ -114,7 +134,11 @@ export default function Header() {
         href="/boutique"
         className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
-        <img className="h-auto w-[15%]" src="/header/boutique.png" alt="boutique" />
+        <img
+          className="h-auto w-[15%]"
+          src="/header/boutique.png"
+          alt="boutique"
+        />
         <span>Boutique</span>
       </Link>
 
@@ -123,10 +147,14 @@ export default function Header() {
           onClick={() => setShowAccountMenu(!showAccountMenu)}
           className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
         >
-          <p className="text-lg">350</p>
+          <p className="text-lg">{userCoins}</p>
           <img src="header/coins.png" alt="" />
-          <p className="text-lg">Niveau 17</p>
-          <img className="h-auto w-[15%]" src="/header/compte.png" alt="compte" />
+          <p className="text-lg">Niveau {userLevel}</p>
+          <img
+            className="h-auto w-[15%]"
+            src="/header/compte.png"
+            alt="compte"
+          />
         </button>
 
         {showAccountMenu && (
