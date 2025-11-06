@@ -1,5 +1,5 @@
 import { QuizQuestionCrud } from "../crud/quizQuestionCrud";
-import { AnswerUnknownQuizQuestionBusinessLogicError, GetQuizQuestionBusinessLogicError, GetQuizQuestionsBusinessLogicError } from "../errors/businessLogic/quizQuestionBusinessLogicError";
+import { GetQuizQuestionBusinessLogicError, GetQuizQuestionsBusinessLogicError } from "../errors/businessLogic/quizQuestionBusinessLogicError";
 import { QuizQuestion } from "../models/quizQuestion/quizQuestion.model";
 import QuizQuestionTransformer from "../models/quizQuestion/quizQuestionTransformer";
 import { IdQuiz, IdQuizQuestion } from "../types/custom.types";
