@@ -21,7 +21,7 @@ export default class EarnedCrud extends ConfigCrud {
         }
     }
 
-    async updateEarned(earned: Earned) {
+    async updateEarned(earned: Omit<Earned, 'earnedAt'>) {
         try {
             await this.prisma.earned.update({
                 where: {

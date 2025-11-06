@@ -14,3 +14,9 @@ export type Earned = {
     earnedAt: Date
     idUser: IdUser
 }
+
+export type EarnedUpdateDto = {
+    idBadge?: unknown
+    isEquiped?: unknown
+    idUser?: unknown
+}

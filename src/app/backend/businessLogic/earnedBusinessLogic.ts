@@ -16,7 +16,7 @@ export default class EarnedBusinessLogic {
         await this.earnedCrud.createEarned(idbadge, false, idUser)
     }
 
-    async updateEarned(Earned: Earned) {
+    async updateEarned(Earned: Omit<Earned, 'earnedAt'>) {
         await this.earnedCrud.updateEarned(Earned)
     }
 
