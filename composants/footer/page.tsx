@@ -21,7 +21,7 @@ export function FooterMini() {
 
         {/* Copyright compact */}
         <p className="text-xs text-black font-[silkscreen]">
-          © 2025 MonProjet. Tous droits réservés.
+          © 2025 Gamicode. Tous droits réservés.
         </p>
       </div>
     </footer>
