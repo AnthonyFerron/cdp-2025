@@ -8,7 +8,7 @@ export default function MissionsPage() {
         <Header />
         {/* Titre principal */}
         <div className="bg-[#F6F4EF] rounded-lg px-10 py-4 text-3xl text-center mb-8 mt-10">
-          MISSIONS DU JOUR :
+          MISSIONS :
         </div>
 
         {/* Sous-titre + barre de progression */}
