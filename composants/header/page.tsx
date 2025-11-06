@@ -17,7 +17,7 @@ export default function Header() {
     });
   }, []);
 
-  // Fermer le menu si on clique en dehors
+  // Fermer le menu compte si on clique en dehors
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -46,7 +46,7 @@ export default function Header() {
           href="/"
           className="flex items-center justify-center cursor-pointer"
         >
-          <img className="h-auto w-[40%]" src="/logo.png" alt="logo" />
+          <img className="h-auto w-[40%]" src="/header/logo.png" alt="logo" />
         </Link>
         <div></div>
       </div>
@@ -61,26 +61,18 @@ export default function Header() {
           href="/"
           className="flex items-center justify-center cursor-pointer"
         >
-          <img className="h-auto w-[40%]" src="/logo.png" alt="logo" />
+          <img className="h-auto w-[40%]" src="header/logo.png" alt="logo" />
         </Link>
         <div className="flex items-center justify-center gap-4">
           <Link
             href="/sign-in"
-            className="text-2xl bg-[#C0C0C0] text-black px-8 py-3 border-4 border-t-white border-l-white border-r-[#404040] border-b-[#404040] hover:bg-[#D0D0D0] transition uppercase tracking-wider"
-            style={{
-              boxShadow:
-                "inset -2px -2px 0px 0px #808080, inset 2px 2px 0px 0px #FFFFFF",
-            }}
+            className="text-black outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:mt-0.5 px-5"
           >
             Connexion
           </Link>
           <Link
             href="/sign-up"
-            className="text-2xl bg-[#C0C0C0] text-black px-8 py-3 border-4 border-t-white border-l-white border-r-[#404040] border-b-[#404040] hover:bg-[#D0D0D0] transition uppercase tracking-wider"
-            style={{
-              boxShadow:
-                "inset -2px -2px 0px 0px #808080, inset 2px 2px 0px 0px #FFFFFF",
-            }}
+            className="text-black outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:mt-0.5 px-5"
           >
             Inscription
           </Link>
@@ -96,36 +88,45 @@ export default function Header() {
         href="/"
         className="flex items-center justify-center cursor-pointer"
       >
-        <img className="h-auto w-[80%]" src="/logo.png" alt="logo" />
+        <img className="h-auto w-[80%]" src="/header/logo.png" alt="logo" />
       </Link>
+
+      {/* Cours (lien simple, menu déroulant supprimé) */}
       <Link
-        href="/cours"
+        href="/carte"
         className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
-        <img className="h-auto w-[15%]" src="/cours.png" alt="cours" />
+        <img className="h-auto w-[15%]" src="/header/cours.png" alt="cours" />
         <span>Mes cours</span>
       </Link>
+
+      {/* Missions (simple link désormais) */}
       <Link
         href="/missions"
         className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
-        <img className="h-auto w-[15%]" src="/missions.png" alt="missions" />
+        <img className="h-auto w-[15%]" src="/header/missions.png" alt="missions" />
         <span>Missions</span>
+        <span>(1/3)</span>
       </Link>
+
       <Link
-        href="/shop"
+        href="/boutique"
         className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
-        <img className="h-auto w-[15%]" src="/boutique.png" alt="boutique" />
+        <img className="h-auto w-[15%]" src="/header/boutique.png" alt="boutique" />
         <span>Boutique</span>
       </Link>
+
       <div className="relative flex items-center justify-center" ref={menuRef}>
         <button
           onClick={() => setShowAccountMenu(!showAccountMenu)}
           className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
         >
-          <img className="h-auto w-[15%]" src="/compte.png" alt="compte" />
-          <span>Mon Compte</span>
+          <p className="text-lg">350</p>
+          <img src="header/coins.png" alt="" />
+          <p className="text-lg">Niveau 17</p>
+          <img className="h-auto w-[15%]" src="/header/compte.png" alt="compte" />
         </button>
 
         {showAccountMenu && (
