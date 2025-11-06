@@ -22,13 +22,19 @@ export default function Profil() {
   ];
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  // nouvel état pour l'URL du background en haut
+  const [backgroundUrl, setBackgroundUrl] = useState("/fond1.png");
+
   const prev = () => setSelectedIndex((s) => Math.max(0, s - 1));
   const next = () => setSelectedIndex((s) => Math.min(banners.length - 1, s + 1));
   // --- fin modification ---
 
   return (
     <div className="font-[silkscreen]">
-      <div className="bg-[url(/fond1.png)] w-full h-[200px] bg-cover">
+      <div
+        className="w-full h-[200px] bg-cover"
+        style={{ backgroundImage: `url(${backgroundUrl})` }}
+      >
         <div className="grid grid-cols-5 h-full">
           <div className="col-span-2 flex justify-center items-end gap-4 pb-4">
             <img className="w-12 h-auto block" src="bronze_css.png" alt="" />
@@ -185,6 +191,19 @@ export default function Profil() {
             ›
           </button>
         </div>
+        <div className="text-center">
+          <button
+            className="text-3xl"
+            onClick={() => {
+              const raw = banners[selectedIndex];
+              const url = raw ? (raw.startsWith("/") ? raw : "/" + raw) : backgroundUrl;
+              setBackgroundUrl(url);
+            }}
+          >
+            Appliquer
+          </button>
+        </div>
+
 
         <img
           className="w-full h-auto mt-[10%]"
