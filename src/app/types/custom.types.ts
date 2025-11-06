@@ -7,3 +7,4 @@ export type IdCourse = number & { _type: 'IdCourse' }
 export type IdCourseSection = number & { _type: 'IdCourseSection' }
 export type IdQuiz = number & { _type: 'IdQuiz' }
 export type IdQuizQuestion = number & { _type: 'IdQuizQuestion' }
+export type IdCosmetic = number & { _type: 'IdCosmetic' }
