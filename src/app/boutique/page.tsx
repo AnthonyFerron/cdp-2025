@@ -23,13 +23,11 @@ export default function Accueil() {
   const [userId, setUserId] = useState<string | null>(null);
   const [userCoins, setUserCoins] = useState<number>(0);
 
-  // Récupérer l'utilisateur connecté
   useEffect(() => {
     const fetchUser = async () => {
       const session = await authClient.getSession();
       if (session?.data?.user) {
         setUserId(session.data.user.id);
-        // Récupérer les coins de l'utilisateur depuis l'API
         const userRes = await fetch(
           `/backend/api/user/${session.data.user.id}`
         );
@@ -42,7 +40,6 @@ export default function Accueil() {
     fetchUser();
   }, []);
 
-  // Charger les cosmétiques et les items possédés
   useEffect(() => {
     const loadData = async () => {
       if (!userId) return;
@@ -69,29 +66,23 @@ export default function Accueil() {
     loadData();
   }, [userId]);
 
-  // Vérifier si un cosmétique est possédé
   const isOwned = (idCosmetic: IdCosmetic) => {
     return ownedCosmetics.some((owned) => owned.idCosmetic === idCosmetic);
   };
 
-  // Fonction pour obtenir le bon chemin d'image
   const getImagePath = (imagePath: string) => {
-    // Si le chemin commence par /public/, on l'enlève car Next.js sert les fichiers depuis /public/ à la racine
     if (imagePath.startsWith("/public/")) {
       return imagePath.replace("/public/", "/");
     }
-    // Si le chemin commence par public/ (sans /), on l'enlève aussi
     if (imagePath.startsWith("public/")) {
       return "/" + imagePath.replace("public/", "");
     }
-    // Si le chemin ne commence pas par /, on l'ajoute
     if (!imagePath.startsWith("/")) {
       return "/" + imagePath;
     }
     return imagePath;
   };
 
-  // Gérer l'achat
   const handlePurchase = async () => {
     if (!selected || !userId) return;
 
@@ -105,13 +96,11 @@ export default function Accueil() {
       if (result.success) {
         setMessage(result.message || "Achat réussi !");
 
-        // Recharger les données
         const ownedData = await getOwnedCosmetics(userId);
         if (ownedData) {
           setOwnedCosmetics(ownedData);
         }
 
-        // Mettre à jour les coins
         setUserCoins((prev) => prev - selected.price);
 
         setTimeout(() => {
@@ -135,7 +124,6 @@ export default function Accueil() {
     }
   };
 
-  // Filtrer les cosmétiques par type
   const avatars = cosmetics.filter((c) => c.type === "AVATAR");
   const banners = cosmetics.filter((c) => c.type === "BANNER");
 
@@ -151,7 +139,6 @@ export default function Accueil() {
     <div className="bg-[#2D2D2D] min-h-screen font-[silkscreen]">
       <Header />
 
-      {/* Afficher les messages */}
       {message && (
         <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-center font-bold">
           {message}
@@ -186,7 +173,6 @@ export default function Accueil() {
         </button>
       </div>
 
-      {/* Avatars */}
       <div
         className={`${active === "avatars" ? "grid" : "hidden"} grid-cols-3 gap-8 px-8 pt-16 pb-16 max-w-7xl mx-auto`}
       >
@@ -235,7 +221,6 @@ export default function Accueil() {
         })}
       </div>
 
-      {/* Bannières */}
       <div
         className={`${active === "banners" ? "grid" : "hidden"} grid-cols-3 gap-8 px-8 pt-16 pb-16 max-w-7xl mx-auto`}
       >
@@ -284,7 +269,6 @@ export default function Accueil() {
         })}
       </div>
 
-      {/* Pop-up de confirmation */}
       {modalOpen && selected && (
         <div>
           <div className="fixed inset-0 flex items-center justify-center z-50 text-black">
