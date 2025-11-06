@@ -1,12 +1,11 @@
 "use client";
 import { FooterMini } from "../../../composants/footer/page";
-import { HeaderMini } from "../../../composants/header/page";
+import Header from "../../../composants/header/page";
 
 export default function Accueil() {
   return (
     <div className="font-[silkscreen] bg-[#0e0f12] text-gray-300">
-      <HeaderMini />
-
+      <Header />
       <div className="min-h-screen p-6 md:p-12">
 
         <h1 className="text-3xl md:text-4xl font-bold tracking-wide text-[#00c6ff] mb-10 mx-auto w-fit">
