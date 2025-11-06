@@ -1,5 +1,6 @@
 "use client";
 import Header from "../../../composants/header/page";
+import { FooterMini } from "../../../composants/footer/page";
 import { useState } from "react";
 
 export default function Accueil() {
@@ -135,6 +136,10 @@ export default function Accueil() {
         </div>
       </div>
 
+      <div className="h-[1px] mb-20">
+
+      </div>
+
       {/* Pop-up de confirmation */}
       {modalOpen && (
         <div>
@@ -161,6 +166,7 @@ export default function Accueil() {
           </div>
         </div>
       )}
+      <FooterMini />
     </div>
   );
 }
