@@ -239,7 +239,7 @@ export default function Header() {
       </Link>
 
       <Link
-        href="/shop"
+        href="/boutique"
         className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
         <img className="h-auto w-[15%]" src="/header/boutique.png" alt="boutique" />
