@@ -6,7 +6,7 @@ export type CourseSectionDb = {
     order_by: number
     title: string
     content: string
-    image: string
+    image: string | null
     id_course: number
 }
 
@@ -15,7 +15,7 @@ export type CourseSection = {
     orderBy: number
     title: string
     content: string
-    image: string
+    image: string | null
     idCourse: IdCourse
 }
 
