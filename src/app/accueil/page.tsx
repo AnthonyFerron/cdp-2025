@@ -1,6 +1,6 @@
 "use client";
 import { FooterMini } from "../../../composants/footer/page";
-import { HeaderMini } from "../../../composants/header/page";
+import Header from "../../../composants/header/page";
 
 export default function SignInPage() {
   return (

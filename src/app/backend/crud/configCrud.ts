@@ -8,7 +8,7 @@ export default class ConfigCrud {
     constructor() {
 
         this.prisma = new PrismaClient({
-            log: ["query", "error"]
+            log: ["error"]
         })
     }
 }
