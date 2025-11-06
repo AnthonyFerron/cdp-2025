@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { FooterMini } from "../../../composants/footer/page";
 import Header from "../../../composants/header/page";
 
 export default function SignInPage() {
@@ -47,7 +48,7 @@ export default function SignInPage() {
 
   return (
     <div>
-      <Header />
+      <HeaderMini />
       <div className="bg-[#1D1D1D] p-10 font-[silkscreen] min-h-screen flex flex-col items-center justify-center gap-8">
         <h1 className="bg-white text-center max-w-md w-full text-[48px] p-4 rounded-lg">
           Se connecter
@@ -101,6 +102,7 @@ export default function SignInPage() {
           </div>
         </form>
       </div>
+      <FooterMini />
     </div>
   );
 }
