@@ -129,7 +129,7 @@ export default function Header() {
         onBlur={() => scheduleCloseCoursesMenu()}
       >
         <Link
-          href="/carte"
+          href="/"
           className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
         >
           <img className="h-auto w-[15%]" src="/header/cours.png" alt="cours" />
@@ -139,21 +139,21 @@ export default function Header() {
         {showCoursesMenu && (
           <div className="absolute top-full mt-2 right-1 bg-[#1D1D1D] border-2 border-white rounded-lg shadow-lg z-50 min-w-[160px]">
             <Link
-              href="/carte"
+              href="/carte_html"
               className="block px-4 py-2 text-base text-white hover:bg-[#13ADDC] transition"
               onClick={() => { if (coursesCloseTimer.current) { clearTimeout(coursesCloseTimer.current); coursesCloseTimer.current = null; } setShowCoursesMenu(false); }}
             >
               HTML
             </Link>
             <Link
-              href="/carte"
+              href="/carte_css"
               className="block px-4 py-2 text-base text-white hover:bg-[#13ADDC] transition"
               onClick={() => { if (coursesCloseTimer.current) { clearTimeout(coursesCloseTimer.current); coursesCloseTimer.current = null; } setShowCoursesMenu(false); }}
             >
               CSS
             </Link>
             <Link
-              href="/carte"
+              href="/carte_python"
               className="block px-4 py-2 text-base text-white hover:bg-[#13ADDC] transition rounded-b-lg"
               onClick={() => { if (coursesCloseTimer.current) { clearTimeout(coursesCloseTimer.current); coursesCloseTimer.current = null; } setShowCoursesMenu(false); }}
             >
