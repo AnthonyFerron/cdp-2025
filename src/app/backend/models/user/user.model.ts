@@ -57,3 +57,17 @@ export type UserUpdateDto = {
 export type UserDeleteDto = {
   id?: IdUser;
 };
+
+export type UserAddCoinsDto = {
+  id?: unknown;
+  coins?: unknown;
+};
+
+export type UserAddExperienceDto = {
+  id?: unknown;
+  experience?: unknown;
+};
+
+export type UserCalculateLevelDto = {
+  id?: unknown;
+};

@@ -5,6 +5,9 @@ import {
   UserCreateDto,
   UserUpdateDto,
   UserDeleteDto,
+  UserAddCoinsDto,
+  UserAddExperienceDto,
+  UserCalculateLevelDto,
 } from "../models/user/user.model";
 import { GetUserWithIdBusinessLogicError } from "../errors/businessLogic/userBusinessLogicError";
 import { IdCountry, IdUser } from "../types/custom.types";
@@ -161,6 +164,81 @@ export default class UserController {
     try {
       const users = await this.userBusinessLogic.getUsers();
       return NextResponse.json<User[]>(users, { status: 200 });
+    } catch (err) {
+      console.error(err);
+      return new NextResponse("Erreur serveur", { status: 500 });
+    }
+  }
+
+  async addCoinsToUser(req: Request) {
+    try {
+      const { id, coins }: UserAddCoinsDto = await req.json();
+
+      if (
+        id &&
+        typeof id === "string" &&
+        typeof coins === "number" &&
+        coins > 0
+      ) {
+        await this.userBusinessLogic.addCoinsToUser(id as IdUser, coins);
+        return new NextResponse(null, { status: 200 });
+      } else {
+        return new NextResponse(
+          "L'id de l'utilisateur ou le montant est incorrect",
+          {
+            status: 400,
+          }
+        );
+      }
+    } catch (err) {
+      console.error(err);
+      return new NextResponse("Erreur serveur", { status: 500 });
+    }
+  }
+
+  async addExperienceToUser(req: Request) {
+    try {
+      const { id, experience }: UserAddExperienceDto = await req.json();
+
+      if (
+        id &&
+        typeof id === "string" &&
+        typeof experience === "number" &&
+        experience > 0
+      ) {
+        await this.userBusinessLogic.addExperienceToUser(
+          id as IdUser,
+          experience
+        );
+        return new NextResponse(null, { status: 200 });
+      } else {
+        return new NextResponse(
+          "L'id de l'utilisateur ou le montant d'expérience est incorrect",
+          {
+            status: 400,
+          }
+        );
+      }
+    } catch (err) {
+      console.error(err);
+      return new NextResponse("Erreur serveur", { status: 500 });
+    }
+  }
+
+  async calculateLevel(req: Request) {
+    try {
+      const { id }: UserCalculateLevelDto = await req.json();
+
+      if (id && typeof id === "string") {
+        const levelInfo = await this.userBusinessLogic.calculateAndUpdateLevel(
+          id as IdUser
+        );
+        return NextResponse.json(levelInfo, { status: 200 });
+      } else {
+        return new NextResponse("L'id de l'utilisateur est incorrect", {
+          status: 400,
+        });
+      }
     } catch (err) {
       console.error(err);
       return new NextResponse("Erreur serveur", { status: 500 });
