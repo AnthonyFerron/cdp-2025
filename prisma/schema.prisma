@@ -162,10 +162,10 @@ model Quiz_Attempt {
   passed          Boolean
   started_at      DateTime
   completed_at    DateTime
-  user_id         String
+  id_user         String
   id_quiz         Int
 
-  User User @relation(fields: [user_id], references: [id])
+  User User @relation(fields: [id_user], references: [id])
   Quiz Quiz @relation(fields: [id_quiz], references: [id_quiz])
 }
 

@@ -9,3 +9,4 @@ export type IdQuiz = number & { _type: 'IdQuiz' }
 export type IdQuizQuestion = number & { _type: 'IdQuizQuestion' }
 export type IdCosmetic = number & { _type: 'IdCosmetic' }
 export type IdUser = string & { _type: "IdUser" };
+export type IdQuizAttempt = number & { _type: 'IdQuizAttempt' }
