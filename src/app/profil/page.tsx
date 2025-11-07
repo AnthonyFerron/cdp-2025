@@ -9,7 +9,9 @@ import getUser from "@/app/requests/user/getUser";
 import updateUser from "@/app/requests/user/updateUser";
 import deleteUser from "@/app/requests/user/deleteUser";
 import getCountries from "@/app/requests/user/country/getCountries";
+import recalculateUserLevel from "@/app/requests/user/recalculateUserLevel";
 import { Owned } from "@/app/models/owned.model";
+import Header from "../../../composants/header/page";
 import { Achieved } from "../models/achieved.model";
 import getAchievedMissions from "../requests/user/achieved/getAchievedMissions";
 import { IdUser } from "../types/custom.types";
@@ -53,14 +55,21 @@ export default function Profil() {
     type: "success" | "error";
   } | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [levelInfo, setLevelInfo] = useState<{
+    xpForNextLevel: number;
+    xpProgress: number;
+    xpNeededForNextLevel: number;
+    progressPercentage: number;
+  } | null>(null);
 
   const level = userData?.levels || 1;
   const currentXP = userData?.experience || 0;
-  const nextLevelXP = 800;
-  const progressPercent = Math.min(
-    100,
-    Math.floor((currentXP / nextLevelXP) * 100)
-  );
+  // XP dans le niveau actuel (pas le total)
+  const currentLevelXP = levelInfo?.xpProgress || 0;
+  // XP requis pour passer au niveau suivant
+  const xpRequiredForNextLevel = 1000 + 500 * (level - 1);
+  // Utiliser le pourcentage calculé par le backend
+  const progressPercent = levelInfo?.progressPercentage || 0;
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -77,6 +86,16 @@ export default function Profil() {
       if (!userId) return;
 
       try {
+        // Recalculer le niveau de l'utilisateur et récupérer les infos de progression
+        const levelData = await recalculateUserLevel(userId);
+        setLevelInfo({
+          xpForNextLevel: levelData.xpForNextLevel,
+          xpProgress: levelData.xpProgress,
+          xpNeededForNextLevel: levelData.xpNeededForNextLevel,
+          progressPercentage: levelData.progressPercentage,
+        });
+
+        // Charger les données utilisateur mises à jour
         const user = await getUser(userId);
         setUserData(user);
         setFormData({
@@ -252,6 +271,49 @@ export default function Profil() {
   const [selectedBanner, setSelectedBanner] = useState(equippedBanner);
   const [selectedAvatar, setSelectedAvatar] = useState(equippedAvatar);
 
+  // Fonction pour convertir le chemin de l'avatar en chemin de l'avatar de profil
+  const getProfileAvatarPath = (avatarPath: string): string => {
+    const mapping: { [key: string]: string } = {
+      alien_vert: "alienGreen",
+      alien_bleu: "alienBlue",
+      alien_beige: "alienBeige",
+      alien_rose: "alienPink",
+      alien_jaune: "alienYellow",
+    };
+
+    for (const [key, value] of Object.entries(mapping)) {
+      if (avatarPath.includes(key)) {
+        return `/profil/avatars/${value}Profil.png`;
+      }
+    }
+
+    // Par défaut, retourner l'avatar vert de profil
+    return "/profil/avatars/alienGreenProfil.png";
+  };
+
+  // Fonction pour obtenir la couleur de l'avatar équipé
+  const getAvatarColor = (avatarPath: string): string => {
+    const mapping: { [key: string]: string } = {
+      alien_vert: "Green",
+      alien_bleu: "Blue",
+      alien_beige: "Beige",
+      alien_rose: "Pink",
+      alien_jaune: "Yellow",
+    };
+
+    for (const [key, value] of Object.entries(mapping)) {
+      if (avatarPath.includes(key)) {
+        return value;
+      }
+    }
+
+    // Par défaut, retourner Green
+    return "Green";
+  };
+
+  const profileAvatarPath = getProfileAvatarPath(selectedAvatar);
+  const avatarColor = getAvatarColor(selectedAvatar);
+
   useEffect(() => {
     setSelectedBanner(equippedBanner);
     setSelectedAvatar(equippedAvatar);
@@ -326,6 +388,7 @@ export default function Profil() {
 
   return (
     <div className="font-[silkscreen] flex flex-col bg-[#2D2D2D] w-screen min-h-screen">
+      <Header />
       <div className="w-full">
         <Image
           src={selectedBanner}
@@ -338,7 +401,7 @@ export default function Profil() {
         <div className="flex mx-40 gap-5 -translate-y-1/2">
           <div>
             <Image
-              src={selectedAvatar}
+              src={profileAvatarPath}
               width={150}
               height={150}
               alt={"avatar"}
@@ -356,7 +419,7 @@ export default function Profil() {
                 <div className="flex items-center justify-between text-white text-sm mb-1">
                   <p>Niveau {level}</p>
                   <p>
-                    {currentXP} / {nextLevelXP} XP
+                    {currentLevelXP} / {xpRequiredForNextLevel} XP
                   </p>
                 </div>
                 <div className="h-3 w-full bg-gray-700 rounded-full border border-white">
@@ -454,13 +517,25 @@ export default function Profil() {
                     onClick={prevBanners}
                     className="absolute top-1/2 h-full w-1/3 left-0 -translate-y-1/2 px-24 py-2 transition z-20 bg-gradient-to-l from-transparent to-[#2D2D2D]"
                   >
-                    <span className="text-4xl text-white">←</span>
+                    <Image
+                      src="/profil/arrow_basic_w.png"
+                      alt="Previous"
+                      width={40}
+                      height={40}
+                      className="pixelated-rendering"
+                    />
                   </button>
                   <button
                     onClick={nextBanners}
                     className="absolute top-1/2 right-0 -translate-y-1/2 w-1/3 h-full flex items-center justify-end px-24 bg-gradient-to-r from-transparent to-[#2D2D2D] transition z-20"
                   >
-                    <span className="text-4xl text-white">→</span>
+                    <Image
+                      src="/profil/arrow_basic_e.png"
+                      alt="Next"
+                      width={40}
+                      height={40}
+                      className="pixelated-rendering"
+                    />
                   </button>
                 </div>
                 <h2 className={"text-2xl underline ml-5 font-bold"}>Avatars</h2>
@@ -491,13 +566,25 @@ export default function Profil() {
                     onClick={prevAvatars}
                     className="absolute top-1/2 h-full w-1/3 left-0 -translate-y-1/2 px-24 py-2 transition z-20 bg-gradient-to-l from-transparent to-[#2D2D2D]"
                   >
-                    <span className="text-4xl text-white">←</span>
+                    <Image
+                      src="/profil/arrow_basic_w.png"
+                      alt="Previous"
+                      width={40}
+                      height={40}
+                      className="pixelated-rendering"
+                    />
                   </button>
                   <button
                     onClick={nextAvatars}
                     className="absolute top-1/2 right-0 -translate-y-1/2 w-1/3 h-full flex items-center justify-end px-24 bg-gradient-to-r from-transparent to-[#2D2D2D] transition z-20"
                   >
-                    <span className="text-4xl text-white">→</span>
+                    <Image
+                      src="/profil/arrow_basic_e.png"
+                      alt="Next"
+                      width={40}
+                      height={40}
+                      className="pixelated-rendering"
+                    />
                   </button>
                 </div>
                 <div className="flex justify-center gap-4 mb-8">
@@ -640,8 +727,14 @@ export default function Profil() {
                   </h2>
                   <div className={"flex justify-between"}>
                     <div className={"flex gap-5"}>
-                      <div className="text-6xl flex items-center justify-center w-[100px]">
-                        🐍
+                      <div className="flex items-center justify-center w-[100px]">
+                        <Image
+                          src="/profil/language/python_pixel.png"
+                          alt="Python"
+                          width={80}
+                          height={80}
+                          className="pixelated-rendering"
+                        />
                       </div>
                       <div className={"text-white"}>
                         <h2 className={"text-3xl font-bold"}>python</h2>
@@ -654,8 +747,14 @@ export default function Profil() {
                       </div>
                     </div>
                     <div className={"flex gap-5"}>
-                      <div className="text-6xl flex items-center justify-center w-[100px]">
-                        📄
+                      <div className="flex items-center justify-center w-[100px]">
+                        <Image
+                          src="/profil/language/html5_pixel.png"
+                          alt="HTML"
+                          width={80}
+                          height={80}
+                          className="pixelated-rendering"
+                        />
                       </div>
                       <div className={"text-white"}>
                         <h2 className={"text-3xl font-bold"}>html</h2>
@@ -668,8 +767,14 @@ export default function Profil() {
                       </div>
                     </div>
                     <div className={"flex gap-5"}>
-                      <div className="text-6xl flex items-center justify-center w-[100px]">
-                        🎨
+                      <div className="flex items-center justify-center w-[100px]">
+                        <Image
+                          src="/profil/language/css_old_pixel.png"
+                          alt="CSS"
+                          width={80}
+                          height={80}
+                          className="pixelated-rendering"
+                        />
                       </div>
                       <div className={"text-white"}>
                         <h2 className={"text-3xl font-bold"}>css</h2>
@@ -687,6 +792,56 @@ export default function Profil() {
             );
         }
       })()}
+
+      {/* Ground Section with Avatars - masqué en mode édition */}
+      {!hasAnyParam && (
+        <div className="relative w-full mt-auto">
+          {/* Conteneur des avatars - positionnés au-dessus du ground */}
+          <div className="absolute bottom-full left-0 right-0 flex items-end justify-between px-32 pb-1">
+            {/* Avatar de gauche */}
+            <div className="flex-1 flex justify-start items-end">
+              <Image
+                src={`/profil/avatars/alien${avatarColor}1.png`}
+                alt="avatar left"
+                width={120}
+                height={120}
+                className="pixelated-rendering"
+              />
+            </div>
+
+            {/* Avatar du milieu */}
+            <div className="flex-1 flex justify-center items-end">
+              <Image
+                src={`/profil/avatars/alien${avatarColor}2.png`}
+                alt="avatar center"
+                width={120}
+                height={120}
+                className="pixelated-rendering"
+              />
+            </div>
+
+            {/* Avatar de droite */}
+            <div className="flex-1 flex justify-end items-end">
+              <Image
+                src={`/profil/avatars/alien${avatarColor}3.png`}
+                alt="avatar right"
+                width={120}
+                height={120}
+                className="pixelated-rendering"
+              />
+            </div>
+          </div>
+
+          {/* Image de fond ground.png */}
+          <Image
+            src="/profil/ground.png"
+            alt="ground"
+            width={1440}
+            height={94}
+            className="w-full h-auto pixelated-rendering"
+          />
+        </div>
+      )}
 
       {/* Delete Account Modal */}
       {showDeleteModal && (

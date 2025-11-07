@@ -9,7 +9,6 @@ import MissionCrud from "../crud/missionCrud"
 import EarnedBusinessLogic from "./earnedBusinessLogic"
 import AchievedBusinessLogic from "./achievedBusinessLogic"
 
-
 export default class UserBusinessLogic {
 
 	private readonly levelCalculator: UserLevelCalculator
@@ -126,20 +125,26 @@ export default class UserBusinessLogic {
 		xpNeededForNextLevel: number
 		progressPercentage: number
 	}> {
-		// Récupérer l'utilisateur
 		const user = await this.getUserWithId(id)
 
-		// Calculer le niveau basé sur l'XP
 		const levelInfo = this.levelCalculator.checkLevelUp(
 			user.levels,
 			user.experience
 		)
 
-		// Si level up, mettre à jour le niveau en base
 		if (levelInfo.hasLeveledUp) {
 			await this.userCrud.updateUserLevel(id, levelInfo.newLevel)
 		}
 
-		return levelInfo
+		const finalLevelInfo = this.levelCalculator.checkLevelUp(
+			levelInfo.newLevel,
+			user.experience
+		)
+
+		return {
+			...finalLevelInfo,
+			hasLeveledUp: levelInfo.hasLeveledUp,
+			levelsGained: levelInfo.levelsGained,
+		}
 	}
 }

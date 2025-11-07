@@ -16,17 +16,21 @@ export default class UserLevelCalculator {
   calculateLevel(totalXP: number): number {
     if (totalXP < this.BASE_XP) return 1;
 
-    // Formule inversée de la somme arithmétique
-    // totalXP = 250 * (level - 1) * (3 + level)
-    // Résolution de l'équation quadratique: 250*level^2 + 500*level - 750 - totalXP = 0
+    // Somme arithmétique: totalXP = (n × (2×1000 + (n-1)×500)) / 2
+    // où n = level - 1
+    // Résolution: totalXP = (n × (2000 + 500n - 500)) / 2
+    //             totalXP = (n × (1500 + 500n)) / 2
+    //             totalXP = 750n + 250n²
+    //             250n² + 750n - totalXP = 0
     const a = 250;
-    const b = 500;
-    const c = -750 - totalXP;
+    const b = 750;
+    const c = -totalXP;
 
     const discriminant = b * b - 4 * a * c;
-    const level = (-b + Math.sqrt(discriminant)) / (2 * a);
+    const n = (-b + Math.sqrt(discriminant)) / (2 * a);
 
-    return Math.max(1, Math.floor(level) + 1);
+    // n = level - 1, donc level = n + 1
+    return Math.max(1, Math.floor(n) + 1);
   }
 
   /**
@@ -36,8 +40,15 @@ export default class UserLevelCalculator {
    */
   getXPForLevel(level: number): number {
     if (level <= 1) return 0;
-    // Formule: 250 * (level - 1) * (3 + level)
-    return 250 * (level - 1) * (3 + level);
+    // Somme arithmétique: 1000 + 1500 + 2000 + ... + (1000 + 500*(level-2))
+    // Formule: (nombre de termes × (premier terme + dernier terme)) / 2
+    // Nombre de termes: level - 1
+    // Premier terme: 1000
+    // Dernier terme: 1000 + 500 * (level - 2)
+    const n = level - 1;
+    const firstTerm = this.BASE_XP;
+    const lastTerm = this.BASE_XP + this.INCREMENT_XP * (n - 1);
+    return (n * (firstTerm + lastTerm)) / 2;
   }
 
   /**

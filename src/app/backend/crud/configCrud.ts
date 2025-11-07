@@ -1,14 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-
+import { prisma } from "@/lib/prisma";
 
 export default class ConfigCrud {
+  prisma: PrismaClient;
 
-    prisma: PrismaClient
-
-    constructor() {
-
-        this.prisma = new PrismaClient({
-            log: ["error"]
-        })
-    }
+  constructor() {
+    this.prisma = prisma;
+  }
 }
