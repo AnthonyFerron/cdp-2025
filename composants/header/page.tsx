@@ -4,7 +4,7 @@ import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import Image from "next/image";
 import getOwnedCosmetics from "@/app/requests/user/cosmetic/getOwnedCosmetics";
-import {Owned} from "@/app/models/owned.model";
+import { Owned } from "@/app/models/owned.model";
 
 export default function Header() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -26,6 +26,7 @@ export default function Header() {
       setIsAuthenticated(!!session.data);
 
       if (session.data?.user) {
+        setUserId(session.data.user.id);
         const userRes = await fetch(
           `/backend/api/user/${session.data.user.id}`
         );
@@ -41,6 +42,12 @@ export default function Header() {
 
     fetchUserData();
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      loadOwnedCosmetics();
+    }
+  }, [userId]);
 
   const loadOwnedCosmetics = async () => {
     if (!userId) return;
@@ -147,12 +154,31 @@ export default function Header() {
 
   const [selectedAvatar, setSelectedAvatar] = useState(equippedAvatar);
 
+  // Mettre à jour selectedAvatar quand ownedCosmetics change
+  useEffect(() => {
+    if (ownedCosmetics.length > 0) {
+      const ownedAvatarsTemp = ownedCosmetics
+        .filter((item) => item.Cosmetic?.type === "AVATAR")
+        .map((item) => ({
+          id: item.idCosmetic,
+          image: getImagePath(item.Cosmetic?.image || ""),
+          isEquiped: item.isEquiped,
+          name: item.Cosmetic?.name || "",
+        }));
+
+      const equipped =
+        ownedAvatarsTemp.find((a) => a.isEquiped)?.image ||
+        ownedAvatarsTemp[0]?.image ||
+        "/cosmetics/avatars/alien_vert.png";
+
+      setSelectedAvatar(equipped);
+    }
+  }, [ownedCosmetics]);
+
   async function handleLogout() {
     await authClient.signOut();
     window.location.href = "/";
   }
-
-  loadOwnedCosmetics()
 
   const getProfileAvatarPath = (avatarPath: string): string => {
     const mapping: { [key: string]: string } = {
@@ -202,7 +228,13 @@ export default function Header() {
           href="/"
           className="flex items-center justify-center cursor-pointer"
         >
-          <Image width={200} height={0} className="h-auto" src="/header/logo.png" alt="logo" />
+          <Image
+            width={200}
+            height={0}
+            className="h-auto"
+            src="/header/logo.png"
+            alt="logo"
+          />
         </Link>
         <div className="flex items-center justify-center gap-4">
           <Link
@@ -230,7 +262,13 @@ export default function Header() {
           href="/"
           className="flex items-center justify-center cursor-pointer"
         >
-          <Image width={200} height={0} className="h-auto" src="/header/logo.png" alt="logo" />
+          <Image
+            width={200}
+            height={0}
+            className="h-auto"
+            src="/header/logo.png"
+            alt="logo"
+          />
         </Link>
         <div className="flex items-center justify-center gap-4">
           <Link
@@ -258,7 +296,13 @@ export default function Header() {
           href="/"
           className="flex items-center justify-center cursor-pointer"
         >
-          <Image width={200} height={0} className="h-auto" src="/header/logo.png" alt="logo" />
+          <Image
+            width={200}
+            height={0}
+            className="h-auto"
+            src="/header/logo.png"
+            alt="logo"
+          />
         </Link>
       </div>
       <div className={"flex flex-row gap-5 items-center"}>
@@ -274,13 +318,18 @@ export default function Header() {
             href="#"
             className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
           >
-            <Image width={40} height={0} className="h-auto" src="/header/cours.png" alt="cours"/>
+            <Image
+              width={40}
+              height={0}
+              className="h-auto"
+              src="/header/cours.png"
+              alt="cours"
+            />
             <span className="text-base text-xl">Mes cours</span>
           </Link>
 
           {showCoursesMenu && (
-            <div
-              className="absolute top-full mt-2 right-1 bg-[#1D1D1D] border-2 border-white rounded-lg shadow-lg z-50 min-w-[160px]">
+            <div className="absolute top-full mt-2 right-1 bg-[#1D1D1D] border-2 border-white rounded-lg shadow-lg z-50 min-w-[160px]">
               <Link
                 href="/carte/html"
                 className="block px-4 py-2 text-base text-white hover:bg-[#13ADDC] transition"
@@ -330,7 +379,8 @@ export default function Header() {
           className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition text-xl"
         >
           <Image
-            width={30} height={0}
+            width={30}
+            height={0}
             className="h-auto"
             src="/header/missions.png"
             alt="missions"
@@ -343,7 +393,8 @@ export default function Header() {
           className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition text-xl"
         >
           <Image
-            width={30} height={0}
+            width={30}
+            height={0}
             className="h-auto"
             src="/header/boutique.png"
             alt="boutique"
@@ -352,11 +403,14 @@ export default function Header() {
         </Link>
       </div>
 
-      <div className="relative flex items-center justify-center gap-3" ref={menuRef}>
+      <div
+        className="relative flex items-center justify-center gap-3"
+        ref={menuRef}
+      >
         <div className={"flex flex-col items-end"}>
           <div className={"flex flex-row items-center"}>
             <p className="text-lg">{userCoins}</p>
-            <Image width={30} height={0} src="/header/coins.png" alt=""/>
+            <Image width={30} height={0} src="/header/coins.png" alt="" />
           </div>
           <p className="text-lg">Niveau {userLevel}</p>
         </div>
