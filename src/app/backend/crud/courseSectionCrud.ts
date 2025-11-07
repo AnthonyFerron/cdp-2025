@@ -11,7 +11,8 @@ export default class CourseSectionCrud extends ConfigCrud {
         title: string,
         content: string,
         idCourse: IdCourse,
-        image: string
+        image: string,
+        code: string
     ) {
         try {
             await this.prisma.course_section.create({
@@ -20,7 +21,8 @@ export default class CourseSectionCrud extends ConfigCrud {
                     title,
                     content,
                     id_course: idCourse,
-                    image
+                    image,
+                    code
                 }
             })
         } catch (err) {
@@ -39,7 +41,8 @@ export default class CourseSectionCrud extends ConfigCrud {
                     title: courseSection.title,
                     content: courseSection.content,
                     id_course: courseSection.idCourse,
-                    image: courseSection.image
+                    image: courseSection.image,
+                    code: courseSection.code
                 }
             })
         } catch (err) {

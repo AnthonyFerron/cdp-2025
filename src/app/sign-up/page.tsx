@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { authClient } from "@/lib/auth-client";
 import Header from "../../../composants/header/page";
+import updateAchievedMission from "../requests/user/achieved/updateAchievedMission";
 
 type Country = {
   id_country: number;
@@ -71,6 +72,8 @@ export default function SignUpPage() {
         );
         console.error("SignUp error:", signUpError);
       } else {
+        // !!!!!!!!! Je sais pas si le IdUser est déja dans le cache
+        // updateAchievedMission()
         setMessage("Compte créé avec succès ! Redirection...");
         setTimeout(() => {
           window.location.href = "/profil";

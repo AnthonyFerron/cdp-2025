@@ -1,12 +1,11 @@
 import getUserUrl from "@/app/helpers/getUserUrl";
-import { Achieved } from "@/app/models/achieved.model";
+import { IdUser } from "@/app/types/custom.types";
 
 
 const userUrl = getUserUrl()
 
-export default async function updateAchievedMission(data: Achieved) {
-    return await fetch(`${userUrl}achieved`, {
-        method: 'PUT',
-        body: JSON.stringify(data)
+export default async function updateAchievedMission(idUser: IdUser) {
+    return await fetch(`${userUrl}achieved?idUser=${idUser}`, {
+        method: 'PUT'
     })
 }

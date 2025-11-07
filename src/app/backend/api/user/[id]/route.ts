@@ -16,7 +16,6 @@ export async function GET(
 
     return new Response(JSON.stringify(user), { status: 200 });
   } catch (error) {
-    console.error("Error fetching user:", error);
     return new Response("Failed to fetch user", { status: 500 });
   }
 }
@@ -45,7 +44,6 @@ export async function PUT(
 
     return new Response(JSON.stringify(updatedUser), { status: 200 });
   } catch (error) {
-    console.error("Error updating user:", error);
     return new Response("Failed to update user", { status: 500 });
   }
 }
@@ -105,7 +103,6 @@ export async function DELETE(
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (error) {
-    console.error("Error deleting user:", error);
     return new Response("Failed to delete user", { status: 500 });
   }
 }

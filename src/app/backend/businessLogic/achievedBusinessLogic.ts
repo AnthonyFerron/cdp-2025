@@ -1,23 +1,20 @@
 import AchievedCrud from "../crud/achievedCrud";
 import MissionCrud from "../crud/missionCrud";
-import UserCrud from "../crud/userCrud";
 import { GetAchievedBusinessLogicError } from "../errors/businessLogic/achievedBusinessLogicError";
 import { Achieved } from "../models/achieved/achieved.model";
 import AchievedTransformer from "../models/achieved/achievedTransformer";
 import { IdMission, IdUser } from "../types/custom.types";
 import MissionBusinessLogic from "./missionBusinessLogic";
-import UserBusinessLogic from "./userBusinessLogic";
+
 
 
 export default class AchievedBusinessLogic {
 
     private readonly achievedCrud: AchievedCrud
-    private readonly userBusinessLogic: UserBusinessLogic
     private readonly missionBusinessLogic: MissionBusinessLogic
 
     constructor() {
         this.achievedCrud = new AchievedCrud()
-        this.userBusinessLogic = new UserBusinessLogic(new UserCrud())
         this.missionBusinessLogic = new MissionBusinessLogic(new MissionCrud())
     }
 
@@ -28,9 +25,6 @@ export default class AchievedBusinessLogic {
     async updateAchieved(achieved: Achieved) {
         await this.achievedCrud.updateAchieved(achieved)
 
-        if (achieved.isCompleted) {
-            await this.userBusinessLogic.missionCompleted(achieved.idUser, achieved.idMission)
-        }
     }
 
     async getAchieved(idUser: IdUser, idMission: IdMission): Promise<Achieved> {

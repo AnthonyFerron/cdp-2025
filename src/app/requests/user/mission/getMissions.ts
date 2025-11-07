@@ -1,6 +1,6 @@
 import getUserUrl from "@/app/helpers/getUserUrl";
+import { Mission } from "@/app/models/mission.model";
 import { ResponseApi } from "@/app/types/api.types";
-import { Mission } from "@prisma/client";
 
 
 const userUrl = getUserUrl()
