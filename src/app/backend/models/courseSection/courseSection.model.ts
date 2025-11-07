@@ -8,6 +8,7 @@ export type CourseSectionDb = {
     content: string
     image: string | null
     id_course: number
+    code: string
 }
 
 export type CourseSection = {
@@ -17,6 +18,7 @@ export type CourseSection = {
     content: string
     image: string | null
     idCourse: IdCourse
+    code: string
 }
 
 export type CourseSectionCreateDto = {
@@ -25,6 +27,7 @@ export type CourseSectionCreateDto = {
     content?: unknown
     idCourse?: unknown
     image?: unknown
+    code?: unknown
 }
 
 export type CourseSectionUpdateDto = {
@@ -34,6 +37,7 @@ export type CourseSectionUpdateDto = {
     content?: unknown
     image?: unknown
     idCourse?: unknown
+    code?: unknown
 }
 
 export type CourseSectionDeleteDto = {

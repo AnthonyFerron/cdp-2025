@@ -12,8 +12,8 @@ type Params = {
 
 const userUrl = getUserUrl()
 
-export default async function getQuizAttempts(idQuiz: IdQuiz, idUser: IdUser, data: Params) {
-    return await fetch(`${userUrl}quizAttempt?idQuiz=${idQuiz}?idUser=${idUser}`, {
+export default async function getQuizAttempt(data: Params) {
+    return await fetch(`${userUrl}quizAttempt`, {
         method: 'POST',
         body: JSON.stringify(data)
     })

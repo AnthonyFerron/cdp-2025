@@ -14,6 +14,7 @@ export default function CourseSectionPage() {
     const [courseSections, setCourseSections] = useState<CourseSection[]>([])
 
     const [title, setTitle] = useState('')
+    const [code, setCode] = useState('')
     const [content, setContent] = useState('')
     const [image, setImage] = useState('')
     const [orderBy, setOrderBy] = useState(0)
@@ -107,6 +108,20 @@ export default function CourseSectionPage() {
         })
     }
 
+    const handleEditCode = (value: string, idCourseSection: IdCourseSection) => {
+        setCourseSections(prev => {
+            return prev.map(p => {
+                if (p.idCourseSection === idCourseSection) {
+                    return {
+                        ...p,
+                        code: value
+                    }
+                }
+                return p
+            })
+        })
+    }
+
     const handleEditOrderBy = (value: number, idCourseSection: IdCourseSection) => {
         setCourseSections(prev => {
             return prev.map(p => {
@@ -137,7 +152,8 @@ export default function CourseSectionPage() {
                 image,
                 content,
                 orderBy,
-                idCourse: parseInt(idCourse) as IdCourse
+                idCourse: parseInt(idCourse) as IdCourse,
+                code
             }
 
             const res = await createCourseSection(data)
@@ -198,6 +214,13 @@ export default function CourseSectionPage() {
                 onChange={(e) => handleEditContent(e.target.value, section.idCourseSection)}
             />
 
+            <textarea
+                placeholder="Code"
+                className="border rounded-lg p-2 w-full focus:ring-2 focus:ring-blue-500"
+                value={courseSections.find((s) => s.idCourseSection === section.idCourseSection)?.code}
+                onChange={(e) => handleEditCode(e.target.value, section.idCourseSection)}
+            />
+
             <div className="flex gap-3 justify-end">
                 <button
                 onClick={() => updateSection(section.idCourseSection)}
@@ -248,10 +271,17 @@ export default function CourseSectionPage() {
             </div>
 
             <textarea
-            placeholder="Content"
-            className="border rounded-lg p-2 w-full focus:ring-2 focus:ring-blue-500"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+                placeholder="Content"
+                className="border rounded-lg p-2 w-full focus:ring-2 focus:ring-blue-500"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+            />
+
+            <textarea
+                placeholder="Code"
+                className="border rounded-lg p-2 w-full focus:ring-2 focus:ring-blue-500"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
             />
 
             <div className="flex justify-end">
