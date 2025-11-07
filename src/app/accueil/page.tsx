@@ -9,23 +9,32 @@ export default function SignInPage() {
 
       {/* Section bannière */}
       <div className="relative bg-[url('/bg2.jpg')] bg-cover bg-center py-16 px-8 text-center">
-        <img src="/header/logo.png" alt="logo" className="mx-auto w-1/3 mb-6" />
-        <p className="text-lg sm:text-2xl font-light max-w-3xl mx-auto mb-12">
-          Bienvenue sur <span className="font-bold">GamiCode</span>, le site
-          d’apprentissage pour maîtriser{" "}
-          <span className="">HTML</span>,{" "}
-          <span className="">CSS</span> et{" "}
-          <span className="">Python</span> à ton rythme.
-        </p>
+        {/* Overlay sombre */}
+        <div className="absolute inset-0 bg-black/60"></div>
 
-        {/* Bouton sur la bannière */}
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-6">
-          <a
-            href="/sign-in"
-            className="inline-block bg-black border border-white px-8 py-3 rounded-md hover:bg-white hover:text-black transition"
-          >
-            COMMENCER DÈS MAINTENANT
-          </a>
+        {/* Contenu */}
+        <div className="relative z-10">
+          <img
+            src="/header/logo.png"
+            alt="logo"
+            className="mx-auto w-1/3 mb-6"
+          />
+          <p className="text-lg sm:text-2xl font-light max-w-3xl mx-auto mb-12">
+            Bienvenue sur <span className="font-bold">GamiCode</span>, le site
+            d&apos;apprentissage pour maîtriser <span className="">HTML</span>,{" "}
+            <span className="">CSS</span> et <span className="">Python</span> à
+            ton rythme.
+          </p>
+
+          {/* Bouton sur la bannière */}
+          <div className="mt-8">
+            <a
+              href="/sign-in"
+              className="inline-block bg-black border border-white px-8 py-3 rounded-md hover:bg-white hover:text-black transition"
+            >
+              COMMENCER DÈS MAINTENANT
+            </a>
+          </div>
         </div>
       </div>
       {/* Section principale */}
@@ -78,9 +87,9 @@ export default function SignInPage() {
           </div>
           <p className="leading-relaxed text-justify text-lg">
             Rejoignez une communauté active qui progresse chaque jour dans
-            l’apprentissage du développement web/Python. Que vous soyez
-            débutant ou déjà passionné, vous apprendrez aux côtés d’autres
-            membres motivés, partageant leurs projets, leurs questions et leurs
+            l’apprentissage du développement web/Python. Que vous soyez débutant
+            ou déjà passionné, vous apprendrez aux côtés d’autres membres
+            motivés, partageant leurs projets, leurs questions et leurs
             réussites pour progresser ensemble dans la programmation.
           </p>
         </div>
@@ -94,7 +103,7 @@ export default function SignInPage() {
         >
           COMMENCER DÈS MAINTENANT
         </a>
-         <FooterMini />
+        <FooterMini />
       </div>
     </div>
   );
