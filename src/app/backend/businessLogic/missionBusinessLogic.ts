@@ -1,5 +1,5 @@
 import MissionCrud from "../crud/missionCrud";
-import { IdBadge, IdMission } from "../types/custom.types";
+import { IdBadge, IdCourse, IdMission } from "../types/custom.types";
 import MissionTransformer from "../models/mission/missionTransformer";
 import { GetMissionWithIdBusinessLogicError } from "../errors/businessLogic/missionBusinessLogicError";
 import { Mission } from "../models/mission/mission.model";
@@ -11,13 +11,14 @@ export default class MissionBusinessLogic {
         private readonly missionCrud: MissionCrud
     ) {}
 
-    async createMission(title: string, content: string, rewardCoins: number, rewardXp: number, targetType: string, idBadge?: IdBadge | unknown) {
+    async createMission(title: string, content: string, rewardCoins: number, rewardXp: number, targetType: string, idCourse: IdCourse, idBadge?: IdBadge | unknown) {
         await this.missionCrud.createMission(
             title,
             content,
             rewardCoins,
             rewardXp,
             targetType,
+            idCourse,
             (idBadge && typeof idBadge === 'number') ? idBadge as IdBadge : undefined
         )
     }

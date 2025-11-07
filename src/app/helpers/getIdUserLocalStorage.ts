@@ -1,7 +1,7 @@
 import { IdUser } from "../types/custom.types"
 
 
-export default function getUserIdLocalStorage() {
+export default function getIdUserLocalStorage() {
     const userStringify = localStorage.getItem('user')
 
     if (userStringify) {

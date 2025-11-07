@@ -10,6 +10,7 @@ type Params = {
     content: string
     idCourse: IdCourse
     image: string
+    code: string
 }
 
 export default async function createCourseSection(data: Params) {
