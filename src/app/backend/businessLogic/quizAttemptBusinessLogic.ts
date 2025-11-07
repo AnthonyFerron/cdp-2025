@@ -36,7 +36,6 @@ export default class QuizAttemptBusinessLogic {
 
     async createQuizAttempt(score: number, passed: boolean, startedAt: Date, idQuiz: IdQuiz, idUser: IdUser) {
         await this.quizAttemptCrud.createQuizAttempt(score, passed, startedAt, idQuiz, idUser)
-
         if (passed) {
             const quiz = await this.quizBusinessLogic.getQuizWithIdQuiz(idQuiz)
             const mission = (await this.missionBusinessLogic.getMissions()).find(m => m.idCourse === quiz.idCourse)
