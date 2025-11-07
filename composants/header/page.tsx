@@ -241,7 +241,7 @@ export default function Header() {
         {showAccountMenu && (
           <div className="absolute top-full mt-2 right-0 bg-[#1D1D1D] border-2 border-white rounded-lg shadow-lg z-50 min-w-[250px]">
             <Link
-              href="/compte"
+              href="/profil"
               className="block px-6 py-3 text-2xl text-white hover:bg-[#13ADDC] hover:text-white transition rounded-t-lg"
               onClick={() => setShowAccountMenu(false)}
             >
