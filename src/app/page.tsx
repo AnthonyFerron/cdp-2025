@@ -11,7 +11,7 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-[silkscreen]">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white sm:items-start">
         <h1 className="text-5xl font-bold text-zinc-900 sm:text-6xl">
           Chargement...
