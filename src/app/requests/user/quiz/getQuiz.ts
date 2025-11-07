@@ -6,7 +6,7 @@ import { IdQuiz } from "@/app/types/custom.types";
 
 const userUrl = getUserUrl()
 
-export default async function getQuiz(idQuiz?: IdQuiz): ResponseApi<Quiz> {
+export default async function getQuiz(idQuiz: IdQuiz): ResponseApi<Quiz> {
     const res = await fetch(`${userUrl}quiz?idQuiz=${idQuiz}`, {
         method: 'GET'
     })

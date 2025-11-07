@@ -7,7 +7,7 @@ import { IdQuiz } from "@/app/types/custom.types";
 const userUrl = getUserUrl()
 
 export default async function getQuizQuestions(idQuiz: IdQuiz, withResponse: boolean): ResponseApi<QuizQuestion[]> {
-    const res = await fetch(`${userUrl}quizQuestion?idQuiz=${idQuiz}${withResponse ? 'isAdmin=1' : ''}`, {
+    const res = await fetch(`${userUrl}quizQuestion?idQuiz=${idQuiz}${withResponse ? '?isAdmin=1' : ''}`, {
         method: 'GET'
     })
 

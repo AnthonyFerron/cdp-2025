@@ -90,7 +90,6 @@ export class QuizQuestionController {
         try {
             const idQuizQuestion = new URL(req.url).searchParams.get('idQuizQuestion')
             const isAdmin = new URL(req.url).searchParams.get('isAdmin')
-
             if (idQuizQuestion) {
                 const quizQuestion = await this.quizQuestionBusinessLogic.getQuizQuestion(parseInt(idQuizQuestion) as IdQuizQuestion, !!isAdmin)
                 return NextResponse.json<QuizQuestion>(quizQuestion, { status: 200 })

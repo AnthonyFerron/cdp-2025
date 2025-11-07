@@ -1,4 +1,5 @@
 import getAdminUrl from "@/app/helpers/getAdminUrl"
+import { IdCourse } from "@/app/types/custom.types"
 
 
 const adminUrl = getAdminUrl()
@@ -9,6 +10,7 @@ type Params = {
     rewardCoins: number
     rewardXp: number
     targetType: string
+    idCourse: IdCourse
     idBadge?: number
 }
 
