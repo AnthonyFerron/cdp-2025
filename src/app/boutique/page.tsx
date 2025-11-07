@@ -137,184 +137,188 @@ export default function Accueil() {
   }
 
   return (
-    <div className="bg-[#2D2D2D] min-h-screen font-[silkscreen]">
+    <div className="bg-[#2D2D2D] min-h-screen font-[silkscreen] flex flex-col">
       <Header />
 
-      {message && (
-        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-center font-bold">
-          {message}
+      <div className="flex-1">
+        {message && (
+          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-center font-bold">
+            {message}
+          </div>
+        )}
+        {error && (
+          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-center font-bold max-w-md">
+            {error}
+          </div>
+        )}
+
+        <div className="w-full grid grid-cols-2 text-5xl mt-10">
+          <button
+            onClick={() => setActive("avatars")}
+            className={`text-right border-r-2 pr-2 ${
+              active === "avatars"
+                ? "text-white border-white"
+                : "text-gray-400 border-white"
+            }`}
+          >
+            Avatars
+          </button>
+          <button
+            onClick={() => setActive("banners")}
+            className={`text-left border-l-2 pl-2 ${
+              active === "banners"
+                ? "text-white border-white"
+                : "text-gray-400 border-white"
+            }`}
+          >
+            Bannières
+          </button>
         </div>
-      )}
-      {error && (
-        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-center font-bold max-w-md">
-          {error}
+
+        <div
+          className={`${active === "avatars" ? "grid" : "hidden"} grid-cols-3 gap-8 px-8 pt-16 pb-16 max-w-7xl mx-auto`}
+        >
+          {avatars.map((cosmetic) => {
+            const owned = isOwned(cosmetic.idCosmetic);
+            return (
+              <div
+                key={cosmetic.idCosmetic}
+                className="mx-auto w-full"
+                onClick={() => {
+                  if (!owned) {
+                    setSelected(cosmetic);
+                    setModalOpen(true);
+                  }
+                }}
+              >
+                <div className="relative">
+                  <Image
+                    className={`rounded-lg w-full h-auto ${owned ? "opacity-50" : "cursor-pointer hover:scale-105 transition-transform"}`}
+                    src={getImagePath(cosmetic.image)}
+                    alt={cosmetic.name}
+                    width={300}
+                    height={300}
+                  />
+                </div>
+                <div className="flex justify-between items-center text-white mt-4">
+                  <p className="text-xl font-bold">{cosmetic.name}</p>
+                  {owned ? (
+                    <p className="text-lg font-bold text-gray-500">Possédé</p>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <p className="text-2xl font-bold text-yellow-400">
+                        {cosmetic.price}
+                      </p>
+                      <Image
+                        src="/header/coins.png"
+                        alt="coins"
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
-      )}
 
-      <div className="w-full grid grid-cols-2 text-5xl mt-10">
-        <button
-          onClick={() => setActive("avatars")}
-          className={`text-right border-r-2 pr-2 ${
-            active === "avatars"
-              ? "text-white border-white"
-              : "text-gray-400 border-white"
-          }`}
+        <div
+          className={`${active === "banners" ? "grid" : "hidden"} grid-cols-3 gap-8 px-8 pt-16 pb-16 max-w-7xl mx-auto`}
         >
-          Avatars
-        </button>
-        <button
-          onClick={() => setActive("banners")}
-          className={`text-left border-l-2 pl-2 ${
-            active === "banners"
-              ? "text-white border-white"
-              : "text-gray-400 border-white"
-          }`}
-        >
-          Bannières
-        </button>
-      </div>
+          {banners.map((cosmetic) => {
+            const owned = isOwned(cosmetic.idCosmetic);
+            return (
+              <div
+                key={cosmetic.idCosmetic}
+                className="mx-auto w-full"
+                onClick={() => {
+                  if (!owned) {
+                    setSelected(cosmetic);
+                    setModalOpen(true);
+                  }
+                }}
+              >
+                <div className="relative">
+                  <Image
+                    className={`rounded-lg w-full h-auto ${owned ? "opacity-50" : "cursor-pointer hover:scale-105 transition-transform"}`}
+                    src={getImagePath(cosmetic.image)}
+                    alt={cosmetic.name}
+                    width={300}
+                    height={300}
+                  />
+                </div>
+                <div className="flex justify-between items-center text-white mt-4">
+                  <p className="text-xl font-bold">{cosmetic.name}</p>
+                  {owned ? (
+                    <p className="text-lg font-bold text-gray-500">Possédé</p>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <p className="text-2xl font-bold text-yellow-400">
+                        {cosmetic.price}
+                      </p>
+                      <Image
+                        src="/header/coins.png"
+                        alt="coins"
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
 
-      <div
-        className={`${active === "avatars" ? "grid" : "hidden"} grid-cols-3 gap-8 px-8 pt-16 pb-16 max-w-7xl mx-auto`}
-      >
-        {avatars.map((cosmetic) => {
-          const owned = isOwned(cosmetic.idCosmetic);
-          return (
-            <div
-              key={cosmetic.idCosmetic}
-              className="mx-auto w-full"
-              onClick={() => {
-                if (!owned) {
-                  setSelected(cosmetic);
-                  setModalOpen(true);
-                }
-              }}
-            >
-              <div className="relative">
-                <Image
-                  className={`rounded-lg w-full h-auto ${owned ? "opacity-50" : "cursor-pointer hover:scale-105 transition-transform"}`}
-                  src={getImagePath(cosmetic.image)}
-                  alt={cosmetic.name}
-                  width={300}
-                  height={300}
-                />
-              </div>
-              <div className="flex justify-between items-center text-white mt-4">
-                <p className="text-xl font-bold">{cosmetic.name}</p>
-                {owned ? (
-                  <p className="text-lg font-bold text-gray-500">Possédé</p>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <p className="text-2xl font-bold text-yellow-400">
-                      {cosmetic.price}
-                    </p>
-                    <Image
-                      src="/header/coins.png"
-                      alt="coins"
-                      width={32}
-                      height={32}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div
-        className={`${active === "banners" ? "grid" : "hidden"} grid-cols-3 gap-8 px-8 pt-16 pb-16 max-w-7xl mx-auto`}
-      >
-        {banners.map((cosmetic) => {
-          const owned = isOwned(cosmetic.idCosmetic);
-          return (
-            <div
-              key={cosmetic.idCosmetic}
-              className="mx-auto w-full"
-              onClick={() => {
-                if (!owned) {
-                  setSelected(cosmetic);
-                  setModalOpen(true);
-                }
-              }}
-            >
-              <div className="relative">
-                <Image
-                  className={`rounded-lg w-full h-auto ${owned ? "opacity-50" : "cursor-pointer hover:scale-105 transition-transform"}`}
-                  src={getImagePath(cosmetic.image)}
-                  alt={cosmetic.name}
-                  width={300}
-                  height={300}
-                />
-              </div>
-              <div className="flex justify-between items-center text-white mt-4">
-                <p className="text-xl font-bold">{cosmetic.name}</p>
-                {owned ? (
-                  <p className="text-lg font-bold text-gray-500">Possédé</p>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <p className="text-2xl font-bold text-yellow-400">
-                      {cosmetic.price}
-                    </p>
-                    <Image
-                      src="/header/coins.png"
-                      alt="coins"
-                      width={32}
-                      height={32}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      
-      {modalOpen && selected && (
-        <div>
-          <div className="fixed inset-0 flex items-center justify-center z-50 text-black">
-            <div
-              className="absolute inset-0 bg-black opacity-60"
-              onClick={() => {
-                setModalOpen(false);
-                setSelected(null);
-                setError("");
-              }}
-            />
-            <div className="relative bg-[#FAF2EA] rounded-lg p-4 w-80 mx-4 z-10">
-              <h3 className="text-xl mb-4 mx-auto w-fit">⚠️ Confirmer ⚠️</h3>
-              <p className="mb-2">
-                Voulez-vous confirmer l&apos;achat de{" "}
-                <span className="font-bold">{selected.name}</span> ?
-              </p>
-              <p className="mb-6 text-sm">
-                Prix: <span className="font-bold">{selected.price}</span> coins
-              </p>
-              {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-              <div className="grid grid-cols-2 w-full gap-2">
-                <button
-                  className="w-full text-center outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:mt-0.5"
-                  onClick={() => {
-                    setModalOpen(false);
-                    setSelected(null);
-                    setError("");
-                  }}
-                  disabled={purchasing}
-                >
-                  Annuler
-                </button>
-                <button
-                  className="outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:mt-0.5 px-5 disabled:opacity-50 disabled:cursor-not-allowed"
-                  onClick={handlePurchase}
-                  disabled={purchasing}
-                >
-                  {purchasing ? "..." : "Confirmer"}
-                </button>
+        {modalOpen && selected && (
+          <div>
+            <div className="fixed inset-0 flex items-center justify-center z-50 text-black">
+              <div
+                className="absolute inset-0 bg-black opacity-60"
+                onClick={() => {
+                  setModalOpen(false);
+                  setSelected(null);
+                  setError("");
+                }}
+              />
+              <div className="relative bg-[#FAF2EA] rounded-lg p-4 w-80 mx-4 z-10">
+                <h3 className="text-xl mb-4 mx-auto w-fit">⚠️ Confirmer ⚠️</h3>
+                <p className="mb-2">
+                  Voulez-vous confirmer l&apos;achat de{" "}
+                  <span className="font-bold">{selected.name}</span> ?
+                </p>
+                <p className="mb-6 text-sm">
+                  Prix: <span className="font-bold">{selected.price}</span>{" "}
+                  coins
+                </p>
+                {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+                <div className="grid grid-cols-2 w-full gap-2">
+                  <button
+                    className="w-full text-center outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:mt-0.5"
+                    onClick={() => {
+                      setModalOpen(false);
+                      setSelected(null);
+                      setError("");
+                    }}
+                    disabled={purchasing}
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    className="outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:mt-0.5 px-5 disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={handlePurchase}
+                    disabled={purchasing}
+                  >
+                    {purchasing ? "..." : "Confirmer"}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+
       <FooterMini />
     </div>
   );

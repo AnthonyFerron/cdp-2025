@@ -7,18 +7,20 @@ import UserLevelCalculator from "../services/userLevelCalculator"
 import MissionBusinessLogic from "./missionBusinessLogic"
 import MissionCrud from "../crud/missionCrud"
 import EarnedBusinessLogic from "./earnedBusinessLogic"
-
+import AchievedBusinessLogic from "./achievedBusinessLogic"
 
 export default class UserBusinessLogic {
 
 	private readonly levelCalculator: UserLevelCalculator
 	private readonly missionBusinessLogic: MissionBusinessLogic
 	private readonly earnedBusinessLogic: EarnedBusinessLogic
+	private readonly achievedBusinessLogic: AchievedBusinessLogic
 
 	constructor(private readonly userCrud: UserCrud) {
 		this.levelCalculator = new UserLevelCalculator()
 		this.missionBusinessLogic = new MissionBusinessLogic(new MissionCrud())
 		this.earnedBusinessLogic = new EarnedBusinessLogic()
+		this.achievedBusinessLogic = new AchievedBusinessLogic()
 	}
 
 	async createUser(
@@ -108,6 +110,10 @@ export default class UserBusinessLogic {
 		if (mission.idBadge) {
 			await this.earnedBusinessLogic.createEarned(mission.idBadge, idUser)
 		}
+
+		const achieved = await this.achievedBusinessLogic.getAchieved(idUser, idMission)
+		achieved.isCompleted = true
+		await this.achievedBusinessLogic.updateAchieved(achieved)
 	}
 
 	async calculateAndUpdateLevel(id: IdUser): Promise<{
@@ -119,20 +125,26 @@ export default class UserBusinessLogic {
 		xpNeededForNextLevel: number
 		progressPercentage: number
 	}> {
-		// Récupérer l'utilisateur
 		const user = await this.getUserWithId(id)
 
-		// Calculer le niveau basé sur l'XP
 		const levelInfo = this.levelCalculator.checkLevelUp(
 			user.levels,
 			user.experience
 		)
 
-		// Si level up, mettre à jour le niveau en base
 		if (levelInfo.hasLeveledUp) {
 			await this.userCrud.updateUserLevel(id, levelInfo.newLevel)
 		}
 
-		return levelInfo
+		const finalLevelInfo = this.levelCalculator.checkLevelUp(
+			levelInfo.newLevel,
+			user.experience
+		)
+
+		return {
+			...finalLevelInfo,
+			hasLeveledUp: levelInfo.hasLeveledUp,
+			levelsGained: levelInfo.levelsGained,
+		}
 	}
 }

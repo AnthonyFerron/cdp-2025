@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
@@ -9,7 +7,6 @@ export async function GET() {
     });
     return new Response(JSON.stringify({ users }), { status: 200 });
   } catch (error) {
-    console.error("Error fetching users:", error);
     return new Response("Failed to fetch users", { status: 500 });
   }
 }
@@ -32,7 +29,6 @@ export async function POST(request: Request) {
     });
     return new Response(JSON.stringify(newUser), { status: 201 });
   } catch (error) {
-    console.error("Error creating user:", error);
     return new Response("Failed to create user", { status: 500 });
   }
 }

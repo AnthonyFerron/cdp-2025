@@ -37,7 +37,7 @@ export default function SignInPage() {
       } else {
         setMessage("Connexion réussie ! Redirection...");
         setTimeout(() => {
-          window.location.href = "/";
+          window.location.href = "/profil";
         }, 1000);
       }
     } catch (err) {

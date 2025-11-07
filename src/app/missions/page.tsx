@@ -1,22 +1,53 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Header from "../../../composants/header/page";
 import { FooterMini } from "../../../composants/footer/page";
 import getMissions from "../requests/user/mission/getMissions";
-import { Mission } from "@prisma/client";
+import { Achieved } from "../models/achieved.model";
+import getAchievedMissions from "../requests/user/achieved/getAchievedMissions";
+import { authClient } from "@/lib/auth-client";
+import { IdMission, IdUser } from "../types/custom.types";
+import { Mission } from "../models/mission.model";
+
 
 export default function MissionsPage() {
-  const [missions, setMissions] = useState<Mission[]>([]);
+
+  const [userId, setUserId] = useState<string | null>(null);
+  const [missions, setMissions] = useState<Mission[]>([])
+  const [missionsAchieved, setMissionsAchieved] = useState<Achieved[]>([]);
   const [loading, setLoading] = useState(true);
   const [completedCount, setCompletedCount] = useState(0);
 
+  const loadMissions = async () => {
+    const res = await getMissions()
+
+    if (res) {
+      setMissions(res)
+    }
+  }
+
   useEffect(() => {
-    const loadMissions = async () => {
+    loadMissions()
+  }, [])
+
+  const numberMissionsFinished = useMemo(() => {
+    if (missionsAchieved) {
+      return missionsAchieved.filter(m => m.isCompleted).length
+    }
+    return 0
+  }, [missionsAchieved])
+
+  const handleMissionFinished = (idMission: IdMission) => {
+    return missionsAchieved.some(m => m.idMission === idMission && m.isCompleted)
+  }
+
+  useEffect(() => {
+    const loadMissionsAchieved = async () => {
       setLoading(true);
       try {
-        const missionsData = await getMissions();
+        const missionsData = await getAchievedMissions(userId as IdUser);
         if (missionsData) {
-          setMissions(missionsData);
+          setMissionsAchieved(missionsData);
           setCompletedCount(0);
         }
       } catch (error) {
@@ -26,12 +57,20 @@ export default function MissionsPage() {
       }
     };
 
-    loadMissions();
+    loadMissionsAchieved();
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const session = await authClient.getSession();
+      if (session?.data?.user) {
+        setUserId(session.data.user.id);
+      }
+    };
+    fetchUser();
   }, []);
 
-  const totalMissions = missions.length;
-  const progressPercentage =
-    totalMissions > 0 ? (completedCount / totalMissions) * 100 : 0;
+  const progressPercentage = missionsAchieved.length > 0 ? (completedCount / missionsAchieved.length) * 100 : 0;
 
   if (loading) {
     return (
@@ -48,13 +87,12 @@ export default function MissionsPage() {
     <div className="bg-[#1D1D1D]">
       <div className="min-h-screen bg-[#1D1D1D] text-black font-[silkscreen] flex flex-col items-center py-10 px-4">
         <Header />
-        <div className="bg-[#F6F4EF] rounded-lg px-10 py-4 text-3xl text-center mb-8 mt-10">
-          MISSIONS :
-        </div>
+
+        <div className="h-[50px]"></div>
 
         <div className="w-full max-w-3xl">
           <h2 className="text-[#5AB2F3] text-2xl font-bold mb-3">
-            MISSIONS ACCOMPLIES : {completedCount}/{totalMissions}
+            MISSIONS ACCOMPLIES : {numberMissionsFinished}/{missionsAchieved.length}
           </h2>
 
           <div className="w-full bg-[#5AB2F3] rounded-full h-4 shadow-inner mb-10">
@@ -77,9 +115,9 @@ export default function MissionsPage() {
         ) : (
           missions.map((mission, index) => (
             <div
-              key={mission.id_mission}
+              key={mission.idMission}
               className={`${
-                index === 0 ? "bg-[#5AB2F3]" : "bg-[#F6F4EF]"
+                handleMissionFinished(mission.idMission) ? "bg-[#5AB2F3]" : "bg-[#F6F4EF]"
               } text-black w-full max-w-3xl rounded-lg px-6 py-4 mb-6 shadow-md`}
             >
               <h3 className="text-xl mb-2 text-center">
@@ -89,9 +127,9 @@ export default function MissionsPage() {
                 {mission.content}
               </p>
               <p className="text-right text-md font-bold">
-                {mission.reward_xp ? `${mission.reward_xp} XP` : ""}
-                {mission.reward_xp && mission.reward_coins ? " + " : ""}
-                {mission.reward_coins ? `${mission.reward_coins} coins` : ""}
+                {mission.rewardXp ? `${mission.rewardXp} XP` : ""}
+                {mission.rewardXp && mission.rewardCoins ? " + " : ""}
+                {mission.rewardCoins ? `${mission.rewardCoins} coins` : ""}
               </p>
             </div>
           ))

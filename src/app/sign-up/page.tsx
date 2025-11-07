@@ -73,10 +73,10 @@ export default function SignUpPage() {
         console.error("SignUp error:", signUpError);
       } else {
         // !!!!!!!!! Je sais pas si le IdUser est déja dans le cache
-        updateAchievedMission()
+        // updateAchievedMission()
         setMessage("Compte créé avec succès ! Redirection...");
         setTimeout(() => {
-          window.location.href = "/";
+          window.location.href = "/profil";
         }, 1500);
       }
     } catch (err) {
