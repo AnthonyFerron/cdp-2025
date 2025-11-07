@@ -73,7 +73,7 @@ export default function SignUpPage() {
       } else {
         setMessage("Compte créé avec succès ! Redirection...");
         setTimeout(() => {
-          window.location.href = "/";
+          window.location.href = "/profil";
         }, 1500);
       }
     } catch (err) {

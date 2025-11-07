@@ -1,10 +1,9 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { Resend } from "resend";
 
-const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const auth = betterAuth({
