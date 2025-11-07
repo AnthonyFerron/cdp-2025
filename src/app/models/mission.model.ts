@@ -1,4 +1,4 @@
-import { IdBadge, IdMission } from "../types/custom.types"
+import { IdBadge, IdCourse, IdMission } from "../types/custom.types"
 
 
 export type Mission = {
@@ -10,4 +10,5 @@ export type Mission = {
     rewardCoins: number | null
     createAt: string
     idBadge: IdBadge | null
+    idCourse: IdCourse
 }

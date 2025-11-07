@@ -1,13 +1,13 @@
 import getUserUrl from "@/app/helpers/getUserUrl";
 import { Quiz } from "@/app/models/quiz.model";
 import { ResponseApi } from "@/app/types/api.types";
-import { IdQuiz } from "@/app/types/custom.types";
+import { IdCourse } from "@/app/types/custom.types";
 
 
 const userUrl = getUserUrl()
 
-export default async function getQuiz(idQuiz: IdQuiz): ResponseApi<Quiz> {
-    const res = await fetch(`${userUrl}quiz?idQuiz=${idQuiz}`, {
+export default async function getQuizWithIdCourse(idCourse: IdCourse): ResponseApi<Quiz> {
+    const res = await fetch(`${userUrl}quiz?idCourse=${idCourse}`, {
         method: 'GET'
     })
 

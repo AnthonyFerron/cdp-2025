@@ -27,4 +27,19 @@ export default class AchievedController {
             return new NextResponse('Erreur serveur', { status: 500 })
         }
     }
+
+    async attachMissions(req: Request) {
+        try {
+            const idUser = new URL(req.url).searchParams.get('idUser')
+
+            if (idUser && typeof idUser === 'string') {
+                await this.achievedBusinessLogic.attachMissionsOnUser(idUser as IdUser)
+            } else {
+                return new NextResponse('Les paramètres sont invalides', { status: 400 })
+            }
+        } catch (err) {
+            console.error(err)
+            return new NextResponse('Erreur serveur', { status: 500 })
+        }
+    }
 }

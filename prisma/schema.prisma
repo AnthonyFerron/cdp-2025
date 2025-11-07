@@ -50,6 +50,7 @@ model Mission {
   reward_coins Int?
   id_badge     Int?
   create_at    DateTime @default(now())
+  id_course    Int
 
   Badge    Badge?     @relation(fields: [id_badge], references: [id_badge])
   achieved achieved[]
@@ -96,6 +97,7 @@ model Course_section {
   content           String @db.VarChar(8000)
   image             String? @db.VarChar(50)
   id_course         Int
+  code              String
 
   Course   Course     @relation(fields: [id_course], references: [id_course])
   progress progress[]

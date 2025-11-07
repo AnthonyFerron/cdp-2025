@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import MissionBusinessLogic from "../businessLogic/missionBusinessLogic";
 import { Mission, MissionCreateDto, MissionDeleteDto } from "../models/mission/mission.model";
 import { GetMissionWithIdBusinessLogicError } from "../errors/businessLogic/missionBusinessLogicError";
-import { IdMission } from "../types/custom.types";
+import { IdCourse, IdMission } from "../types/custom.types";
 
 
 export default class MissionController {
@@ -19,7 +19,8 @@ export default class MissionController {
                 rewardCoins,
                 rewardXp,
                 targetType,
-                idBadge
+                idBadge,
+                idCourse
             }: MissionCreateDto = await req.json()
 
             if (
@@ -27,6 +28,7 @@ export default class MissionController {
                 content && typeof content === 'string' &&
                 rewardCoins && typeof rewardCoins === 'number' &&
                 rewardXp && typeof rewardXp === 'number' &&
+                idCourse && typeof idCourse === 'number' &&
                 targetType && typeof targetType === 'string'
             ) {
                 await this.userBusinesLogic.createMission(
@@ -35,6 +37,7 @@ export default class MissionController {
                     rewardCoins,
                     rewardXp,
                     targetType,
+                    idCourse as IdCourse,
                     idBadge
                 )
                 return new NextResponse(null, { status: 200 })

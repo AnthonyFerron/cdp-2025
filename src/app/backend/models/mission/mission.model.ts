@@ -1,4 +1,4 @@
-import { IdBadge, IdMission } from "../../types/custom.types"
+import { IdBadge, IdCourse, IdMission } from "../../types/custom.types"
 
 
 export type MissionDB = {
@@ -10,6 +10,7 @@ export type MissionDB = {
     reward_coins: number | null
     create_at: Date
     id_badge: number | null
+    id_course: number
 }
 
 export type Mission = {
@@ -21,6 +22,7 @@ export type Mission = {
     rewardCoins: number | null
     createAt: Date
     idBadge: IdBadge | null
+    idCourse: IdCourse
 }
 
 export type MissionCreateDto = {
@@ -30,6 +32,7 @@ export type MissionCreateDto = {
     rewardXp?: unknown
     rewardCoins?: unknown
     idBadge?: unknown
+    idCourse?: unknown
 }
 
 export type MissionDeleteDto = {
