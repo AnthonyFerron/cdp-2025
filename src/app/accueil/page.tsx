@@ -1,8 +1,19 @@
 "use client";
+import { useEffect, useState } from "react";
 import { FooterMini } from "../../../composants/footer/page";
 import Header from "../../../composants/header/page";
+import { authClient } from "@/lib/auth-client";
 
 export default function SignInPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    authClient
+      .getSession()
+      .then((session) => setIsAuthenticated(!!session.data))
+      .catch(() => setIsAuthenticated(false));
+  }, []);
+
   return (
     <div className="bg-[#1D1D1D] min-h-screen text-white font-[silkscreen]">
       <Header />
@@ -20,12 +31,14 @@ export default function SignInPage() {
 
         {/* Bouton sur la bannière */}
         <div className="absolute left-1/2 -translate-x-1/2 bottom-6">
-          <a
-            href="/sign-in"
-            className="inline-block bg-black border border-white px-8 py-3 rounded-md hover:bg-white hover:text-black transition"
-          >
-            COMMENCER DÈS MAINTENANT
-          </a>
+          {!isAuthenticated && (
+            <a
+              href="/sign-in"
+              className="inline-block bg-black border border-white px-8 py-3 rounded-md hover:bg-white hover:text-black transition"
+            >
+              COMMENCER DÈS MAINTENANT
+            </a>
+          )}
         </div>
       </div>
       {/* Section principale */}
@@ -88,13 +101,15 @@ export default function SignInPage() {
 
       {/* Bouton final */}
       <div className="text-center">
-        <a
-          href="/sign-in"
-          className="inline-block bg-white text-black border-2 border-black px-8 py-3 rounded-lg hover:bg-black hover:text-white transition mb-4"
-        >
-          COMMENCER DÈS MAINTENANT
-        </a>
-         <FooterMini />
+        {!isAuthenticated && (
+          <a
+            href="/sign-in"
+            className="inline-block bg-white text-black border-2 border-black px-8 py-3 rounded-lg hover:bg-black hover:text-white transition mb-4"
+          >
+            COMMENCER DÈS MAINTENANT
+          </a>
+        )}
+        <FooterMini />
       </div>
     </div>
   );
