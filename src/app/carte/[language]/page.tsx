@@ -46,9 +46,9 @@ export default function SelectionNiveauxDynamique() {
       setLoading(true);
       try {
         const languageMap: { [key: string]: { id: number; name: string } } = {
-          html: { id: 1, name: "HTML" },
-          css: { id: 2, name: "CSS" },
-          python: { id: 3, name: "Python" },
+          html: { id: 6, name: "HTML" },
+          css: { id: 8, name: "CSS" },
+          python: { id: 7, name: "Python" },
         };
 
         const langInfo = languageMap[language.toLowerCase()];
@@ -63,7 +63,6 @@ export default function SelectionNiveauxDynamique() {
           getCourses(),
           getUserProgress(langInfo.id),
         ]);
-
         if (courses) {
           const filteredCourses = courses.filter(
             (course) => course.idLanguage === langInfo.id && course.isPublished
@@ -98,14 +97,16 @@ export default function SelectionNiveauxDynamique() {
                 Number(sortedCourses[index - 1].idCourse)
               );
 
+            const unlocked = isFirstCourse || isPreviousCompleted;
+
             return {
               id: course.idCourse.toString(),
               libelle: course.title,
-              lien: `/cours/${course.slug}`,
+              lien: `/cours?idCourse=${course.idCourse}`,
               x: positions[index % positions.length].x,
               y: positions[index % positions.length].y,
               difficulty: course.difficulty,
-              isUnlocked: isFirstCourse || isPreviousCompleted,
+              isUnlocked: unlocked,
               isCompleted,
             };
           });
@@ -213,15 +214,6 @@ function PinNiveau({
         title={`${libelle} ${!isUnlocked ? "(Verrouillé)" : isCompleted ? "(Complété)" : ""}`}
         type="button"
       >
-        <div
-          className={`w-full h-full ${
-            isCompleted
-              ? "bg-green-500"
-              : isUnlocked
-                ? "bg-blue-500"
-                : "bg-gray-500"
-          } opacity-0 hover:opacity-30 transition-opacity rounded`}
-        />
         {showIndicator && !isUnlocked && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <span className="text-2xl">🔒</span>
