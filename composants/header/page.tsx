@@ -19,35 +19,47 @@ export default function Header() {
   const [userId, setUserId] = useState<string | null>(null);
   const [ownedCosmetics, setOwnedCosmetics] = useState<Owned[]>([]);
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const fetchUserData = async () => {
+    const session = await authClient.getSession();
+    setIsAuthenticated(!!session.data);
+
+    if (session.data?.user) {
+      setUserId(session.data.user.id);
+      const userRes = await fetch(`/backend/api/user/${session.data.user.id}`);
+      if (userRes.ok) {
+        const userData = await userRes.json();
+        setUserCoins(userData.coins || 0);
+        setUserLevel(userData.levels || 0);
+      }
+    }
+
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const session = await authClient.getSession();
-      setIsAuthenticated(!!session.data);
+    fetchUserData();
 
-      if (session.data?.user) {
-        setUserId(session.data.user.id);
-        const userRes = await fetch(
-          `/backend/api/user/${session.data.user.id}`
-        );
-        if (userRes.ok) {
-          const userData = await userRes.json();
-          setUserCoins(userData.coins || 0);
-          setUserLevel(userData.levels || 0);
-        }
-      }
-
-      setIsLoading(false);
+    // Écouter les événements de mise à jour du header
+    const handleHeaderUpdate = () => {
+      fetchUserData();
+      setRefreshTrigger((prev) => prev + 1);
     };
 
-    fetchUserData();
+    window.addEventListener("updateHeader", handleHeaderUpdate);
+
+    return () => {
+      window.removeEventListener("updateHeader", handleHeaderUpdate);
+    };
   }, []);
 
   useEffect(() => {
     if (userId) {
       loadOwnedCosmetics();
     }
-  }, [userId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, refreshTrigger]);
 
   const loadOwnedCosmetics = async () => {
     if (!userId) return;

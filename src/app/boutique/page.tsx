@@ -104,6 +104,9 @@ export default function Accueil() {
 
         setUserCoins((prev) => prev - selected.price);
 
+        // Notifier le header de se mettre à jour
+        window.dispatchEvent(new Event("updateHeader"));
+
         setTimeout(() => {
           setModalOpen(false);
           setSelected(null);

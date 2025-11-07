@@ -471,6 +471,9 @@ function ProfilContent() {
       if (owned) {
         setOwnedCosmetics(owned);
       }
+
+      // Notifier le header de se mettre à jour
+      window.dispatchEvent(new Event("updateHeader"));
     } catch {}
   };
 
