@@ -252,7 +252,7 @@ export default function Header() {
 
   // Header pour utilisateur connecté
   return (
-    <div className="mx-5 flex flex-row justify-between bg-[#1D1D1D] text-white py-3 font-[silkscreen] text-2xl sm:text-3xl lg:text-4xl items-center">
+    <div className="px-5 flex flex-row justify-between bg-[#1D1D1D] text-white py-3 font-[silkscreen] text-2xl sm:text-3xl lg:text-4xl items-center">
       <div>
         <Link
           href="/"
