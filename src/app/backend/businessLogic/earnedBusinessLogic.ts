@@ -12,8 +12,13 @@ export default class EarnedBusinessLogic {
         this.earnedCrud = new EarnedCrud()
     }
 
-    async createEarned(idbadge: IdBadge, idUser: IdUser) {
-        await this.earnedCrud.createEarned(idbadge, false, idUser)
+    async createEarned(idBadge: IdBadge, idUser: IdUser) {
+        const badges = await this.getEarneds(idUser)
+        const badge = badges.find(badge => badge.idBadge === idBadge)
+
+        if (!badge) {
+            await this.earnedCrud.createEarned(idBadge, false, idUser)
+        }
     }
 
     async updateEarned(Earned: Omit<Earned, 'earnedAt'>) {
