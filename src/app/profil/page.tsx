@@ -902,9 +902,9 @@ export default function Profil() {
 
       {/* Ground Section with Avatars - masqué en mode édition */}
       {!hasAnyParam && (
-        <div className="relative w-full mt-auto">
-          {/* Conteneur des avatars - positionnés au-dessus du ground */}
-          <div className="absolute bottom-full left-0 right-0 flex items-end justify-between px-32 pb-1">
+        <div className="relative w-full mt-16">
+          {/* Conteneur des avatars - maintenant dans le flux normal pour apparaître avant le ground */}
+          <div className="w-full flex items-end justify-between px-32 pb-1">
             {/* Avatar de gauche */}
             <div className="flex-1 flex justify-start items-end">
               <Image
@@ -939,7 +939,7 @@ export default function Profil() {
             </div>
           </div>
 
-          {/* Image de fond ground.png */}
+          {/* Image de fond ground.png — reste dans le flux normal, donc suit les avatars */}
           <Image
             src="/profil/ground.png"
             alt="ground"
