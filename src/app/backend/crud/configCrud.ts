@@ -2,9 +2,13 @@ import { PrismaClient } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 export default class ConfigCrud {
-  prisma: PrismaClient;
+    private static _instance: PrismaClient;
 
-  constructor() {
-    this.prisma = prisma;
-  }
+    protected get prisma(): PrismaClient {
+
+      if (!ConfigCrud._instance) {
+        ConfigCrud._instance = prisma;
+      }
+      return ConfigCrud._instance;
+    }
 }
