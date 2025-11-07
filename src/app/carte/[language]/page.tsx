@@ -106,7 +106,7 @@ export default function SelectionNiveauxDynamique() {
               x: positions[index % positions.length].x,
               y: positions[index % positions.length].y,
               difficulty: course.difficulty,
-              isUnlocked: unlocked,
+              isUnlocked: true,
               isCompleted,
             };
           });

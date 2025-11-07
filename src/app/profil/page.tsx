@@ -445,7 +445,7 @@ export default function Profil() {
                   }
                   router.push(`${window.location.pathname}?${p.toString()}`);
                 }}
-                className="outline-[#989AAF] outline-2 border-2 border-white rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:translate-y-0.5 px-5 hover:cursor-pointer transition-transform duration-300"
+                className="outline-[#989AAF] outline-2 border-2 cursor-pointer border-white rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:translate-y-0.5 px-5 hover:cursor-pointer transition-transform duration-300"
                 type="button"
               >
                 {hasAnyParam ? (
@@ -590,7 +590,7 @@ export default function Profil() {
                 <div className="flex justify-center gap-4 mb-8">
                   <button
                     onClick={handleEquipCosmetic}
-                    className="outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:translate-y-0.5 px-5 text-black"
+                    className="outline-[#989AAF] outline-2 border-2 cursor-pointer border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:translate-y-0.5 px-5 text-black"
                     type="button"
                   >
                     Appliquer
@@ -691,7 +691,7 @@ export default function Profil() {
                     </div>
                   </div>
                   <button
-                    className="outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:translate-y-0.5 px-5 text-black w-fit"
+                    className="outline-[#989AAF] outline-2 border-2 cursor-pointer border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:translate-y-0.5 px-5 text-black w-fit"
                     type="button"
                     onClick={handleSaveProfile}
                   >
@@ -857,7 +857,7 @@ export default function Profil() {
             <div className="flex gap-4 justify-end">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:translate-y-0.5 px-5 py-2 text-black font-silkscreen"
+                className="outline-[#989AAF] outline-2 border-2 cursor-pointer border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:translate-y-0.5 px-5 py-2 text-black font-silkscreen"
               >
                 Annuler
               </button>
