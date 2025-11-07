@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -11,6 +10,10 @@ import updateUser from "@/app/requests/user/updateUser";
 import deleteUser from "@/app/requests/user/deleteUser";
 import getCountries from "@/app/requests/user/country/getCountries";
 import { Owned } from "@/app/models/owned.model";
+import { Achieved } from "../models/achieved.model";
+import getAchievedMissions from "../requests/user/achieved/getAchievedMissions";
+import { IdUser } from "../types/custom.types";
+import updateAchievedMission from "../requests/user/achieved/updateAchievedMission";
 
 type UserData = {
   id: string;
@@ -118,7 +121,17 @@ export default function Profil() {
       }
     };
 
-    loadOwnedCosmetics();
+    const loadMissionsAchieved = async () => {
+      if (!userId) return;
+
+      const res = await getAchievedMissions(userId as IdUser)
+      if (res && res.length === 0) {
+        await updateAchievedMission(userId as IdUser)
+      }
+    }
+
+    loadOwnedCosmetics()
+    loadMissionsAchieved()
   }, [userId]);
 
   const getImagePath = (imagePath: string) => {

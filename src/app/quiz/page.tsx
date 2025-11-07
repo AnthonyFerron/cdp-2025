@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react"
 import { QuizQuestion } from "../models/quizQuestion.model"
 import getQuizQuestions from "../requests/user/quizQuestion/getQuizQuestions"
-import { IdQuiz } from "../types/custom.types"
+import { IdQuiz, IdUser } from "../types/custom.types"
 import Header from "../../../composants/header/page"
 import getQuizQuestion from "../requests/user/quizQuestion/getQuizQuestion"
-import getIdUserLocalStorage from "../helpers/getIdUserLocalStorage"
 import createQuizAttempt from "../requests/user/quizAttempt/createQuizAttempt"
+import { authClient } from "@/lib/auth-client"
 
 
 export default function QuizPage() {
@@ -18,6 +18,7 @@ export default function QuizPage() {
     const [response, setResponse] = useState<QuizQuestion | null>(null)
     const [startedAt, setStartedAt] = useState(new Date())
     const [correctAnswer, setCorrectAnswer] = useState(0)
+    const [userId, setUserId] = useState<string | null>(null);
 
     useEffect(() => {
         if (quizQuestions.length > 0) {
@@ -30,6 +31,16 @@ export default function QuizPage() {
             createQuizAttemptFinished()
         }
     }, [page, quizQuestions])
+
+    useEffect(() => {
+        const fetchUser = async () => {
+          const session = await authClient.getSession();
+          if (session?.data?.user) {
+            setUserId(session.data.user.id);
+          }
+        };
+        fetchUser();
+    }, []);
 
     const loadQuizQuestions = async () => {
         const idQuiz = new URL(document.URL).searchParams.get("idQuiz")
@@ -54,15 +65,14 @@ export default function QuizPage() {
     
     const createQuizAttemptFinished = async () => {
         const idQuiz = new URL(document.URL).searchParams.get("idQuiz")
-        const idUser = getIdUserLocalStorage()
 
-        if (idQuiz && idUser) {
+        if (idQuiz && userId) {
             const data = {
                 passed: (correctAnswer / quizQuestions.length ) * 100 >= 75,
                 score: correctAnswer,
                 startedAt,
                 idQuiz: parseInt(idQuiz) as IdQuiz,
-                idUser
+                idUser: userId as IdUser
             }
 
             await createQuizAttempt(data)
