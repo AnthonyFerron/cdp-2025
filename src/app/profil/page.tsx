@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { authClient } from "@/lib/auth-client";
 import getOwnedCosmetics from "@/app/requests/user/cosmetic/getOwnedCosmetics";
 import equipCosmetic from "@/app/requests/user/cosmetic/equipCosmetic";
@@ -57,7 +57,7 @@ type LanguageProgress = {
   image: string;
 };
 
-export default function Profil() {
+function ProfilContent() {
   const router = useRouter();
   const params = useSearchParams();
   const paramValue = params.get("edit");
@@ -171,14 +171,14 @@ export default function Profil() {
     const loadMissionsAchieved = async () => {
       if (!userId) return;
 
-      const res = await getAchievedMissions(userId as IdUser)
+      const res = await getAchievedMissions(userId as IdUser);
       if (res && res.length === 0) {
-        await updateAchievedMission(userId as IdUser)
+        await updateAchievedMission(userId as IdUser);
       }
-    }
+    };
 
-    loadOwnedCosmetics()
-    loadMissionsAchieved()
+    loadOwnedCosmetics();
+    loadMissionsAchieved();
   }, [userId]);
 
   useEffect(() => {
@@ -1003,5 +1003,19 @@ export default function Profil() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function Profil() {
+  return (
+    <Suspense
+      fallback={
+        <div className="font-[silkscreen] flex items-center justify-center bg-[#2D2D2D] w-screen min-h-screen text-white">
+          <p>Chargement...</p>
+        </div>
+      }
+    >
+      <ProfilContent />
+    </Suspense>
   );
 }

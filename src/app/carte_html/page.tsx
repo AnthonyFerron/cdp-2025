@@ -13,14 +13,19 @@ interface Niveau {
   y: number;
 }
 
-export default function SelectionNiveaux({
-  carteSrc = "/selection-niveaux.png",
-  niveaux = niveauxParDefaut,
-}: {
-  carteSrc?: string;
-  niveaux?: Niveau[];
-}) {
+const niveauxParDefaut: Niveau[] = [
+  { id: "html1", libelle: "HTML 1", lien: "/cours/html1", x: 22.2, y: 75 },
+  { id: "html2", libelle: "HTML 2", lien: "/cours/html2", x: 35.5, y: 62 },
+  { id: "html3", libelle: "HTML 3", lien: "/cours/html3", x: 53.3, y: 50 },
+  { id: "html4", libelle: "HTML 4", lien: "/cours/html4", x: 75.5, y: 50 },
+  { id: "html5", libelle: "HTML 5", lien: "/cours/html5", x: 89, y: 45 },
+  { id: "html6", libelle: "HTML 6", lien: "/cours/html6", x: 75.5, y: 25 },
+];
+
+export default function SelectionNiveaux() {
   const router = useRouter();
+  const carteSrc = "/selection-niveaux.png";
+  const niveaux = niveauxParDefaut;
 
   const allerVers = (lien: string) => {
     router.push(lien);
@@ -32,8 +37,12 @@ export default function SelectionNiveaux({
 
       <main className="mx-auto max-w-7xl px-4 pb-16">
         <div className="flex items-center justify-between gap-4 py-4">
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">Sélection des niveaux</h1>
-          <div className="text-sm opacity-80">Clique sur un losange pour ouvrir le cours</div>
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">
+            Sélection des niveaux
+          </h1>
+          <div className="text-sm opacity-80">
+            Clique sur un losange pour ouvrir le cours
+          </div>
         </div>
 
         <div
@@ -51,7 +60,11 @@ export default function SelectionNiveaux({
           />
 
           {niveaux.map((n) => (
-            <PinNiveau key={n.id} niveau={n} onClick={() => allerVers(n.lien)} />
+            <PinNiveau
+              key={n.id}
+              niveau={n}
+              onClick={() => allerVers(n.lien)}
+            />
           ))}
         </div>
       </main>
@@ -59,20 +72,26 @@ export default function SelectionNiveaux({
   );
 }
 
-function PinNiveau({ niveau, onClick }: { niveau: Niveau; onClick: () => void }) {
+function PinNiveau({
+  niveau,
+  onClick,
+}: {
+  niveau: Niveau;
+  onClick: () => void;
+}) {
   const { libelle, x, y } = niveau;
 
   return (
     <button
       onClick={onClick}
       className="absolute -translate-x-1/2 -translate-y-1/2 focus:outline-none"
-      style={{ 
-        left: `${x}%`, 
+      style={{
+        left: `${x}%`,
         top: `${y}%`,
-        width: '38px',
-        height: '38px',
+        width: "38px",
+        height: "38px",
         opacity: 0,
-        cursor: 'pointer'
+        cursor: "pointer",
       }}
       aria-label={`Ouvrir le cours ${libelle}`}
       title={libelle}
@@ -80,12 +99,3 @@ function PinNiveau({ niveau, onClick }: { niveau: Niveau; onClick: () => void })
     />
   );
 }
-
-const niveauxParDefaut: Niveau[] = [
-  { id: "css1", libelle: "CSS 1", lien: "/cours/html1", x: 22.2, y: 75 },
-  { id: "css2", libelle: "CSS 2", lien: "/cours/html2", x: 35.5, y: 62 },
-  { id: "css3", libelle: "CSS 3", lien: "/cours/html3", x: 53.3, y: 50 },
-  { id: "css4", libelle: "CSS 4", lien: "/cours/html4", x: 75.5, y: 50 },
-  { id: "css5", libelle: "CSS 5", lien: "/cours/html5", x: 89, y: 45 },
-  { id: "css6", libelle: "CSS 6", lien: "/cours/html6", x: 75.5, y: 25 },
-];
