@@ -149,7 +149,7 @@ export default function SelectionNiveauxDynamique() {
             {languageName} - Sélection des niveaux
           </h1>
           <div className="text-sm opacity-80">
-            Clique sur un losange pour ouvrir le cours
+            Clique sur un carré pour ouvrir le cours
           </div>
         </div>
 

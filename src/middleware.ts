@@ -13,6 +13,10 @@ export function middleware(req: NextRequest) {
     "/sign-up",
     "/reset",
     "/reset-password",
+    "/cgi",
+    "/cgu",
+    "/rgpd",
+    "/confidentialite",
   ];
 
   const { pathname } = req.nextUrl;

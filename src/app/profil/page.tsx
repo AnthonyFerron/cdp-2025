@@ -10,6 +10,9 @@ import updateUser from "@/app/requests/user/updateUser";
 import deleteUser from "@/app/requests/user/deleteUser";
 import getCountries from "@/app/requests/user/country/getCountries";
 import recalculateUserLevel from "@/app/requests/user/recalculateUserLevel";
+import getEarnedBadge from "@/app/requests/user/earned/getEarnedBadge";
+import getProgrammingLanguages from "@/app/requests/user/programmingLanguage/getProgrammingLanguages";
+import getCourseProgress from "@/app/requests/user/course/getCourseProgress";
 import { Owned } from "@/app/models/owned.model";
 import Header from "../../../composants/header/page";
 import { Achieved } from "../models/achieved.model";
@@ -33,6 +36,27 @@ type Country = {
   image: string;
 };
 
+type EarnedBadge = {
+  id_user: string;
+  id_badge: number;
+  is_equiped: boolean;
+  earned_at: Date;
+  Badge: {
+    id_badge: number;
+    name: string;
+    image: string;
+  };
+};
+
+type LanguageProgress = {
+  id: number;
+  name: string;
+  completedCourses: number;
+  totalCourses: number;
+  completionPercentage: number;
+  image: string;
+};
+
 export default function Profil() {
   const router = useRouter();
   const params = useSearchParams();
@@ -42,6 +66,10 @@ export default function Profil() {
 
   const [userId, setUserId] = useState<string | null>(null);
   const [ownedCosmetics, setOwnedCosmetics] = useState<Owned[]>([]);
+  const [earnedBadges, setEarnedBadges] = useState<EarnedBadge[]>([]);
+  const [languageProgress, setLanguageProgress] = useState<LanguageProgress[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [countries, setCountries] = useState<Country[]>([]);
@@ -151,6 +179,74 @@ export default function Profil() {
 
     loadOwnedCosmetics()
     loadMissionsAchieved()
+  }, [userId]);
+
+  useEffect(() => {
+    const loadEarnedBadges = async () => {
+      if (!userId) return;
+
+      try {
+        const badges = await getEarnedBadge(userId as any);
+        if (badges) {
+          setEarnedBadges(badges as any);
+        }
+      } catch (error) {
+        console.error("Failed to load badges:", error);
+      }
+    };
+
+    loadEarnedBadges();
+  }, [userId]);
+
+  useEffect(() => {
+    const loadLanguageProgress = async () => {
+      try {
+        const languages = await getProgrammingLanguages();
+        if (!languages || !userId) return;
+
+        const progressData = await Promise.all(
+          languages.map(async (lang) => {
+            const progress = await getCourseProgress(lang.idLanguage);
+
+            // Calculer le nombre de cours complétés
+            const completedCourses = progress?.completedCourses.length || 0;
+
+            // Pour le total, on devrait compter tous les cours du langage
+            // Pour simplifier, on utilise highestCompletedDifficulty comme approximation
+            const totalCourses = progress?.highestCompletedDifficulty || 0;
+
+            const completionPercentage =
+              totalCourses > 0
+                ? Math.round((completedCourses / totalCourses) * 100)
+                : 0;
+
+            // Mapping des images par langage
+            const imageMap: Record<string, string> = {
+              python: "/profil/language/python_pixel.png",
+              html: "/profil/language/html5_pixel.png",
+              css: "/profil/language/css_old_pixel.png",
+            };
+
+            return {
+              id: lang.idLanguage,
+              name: lang.name.toLowerCase(),
+              completedCourses,
+              totalCourses,
+              completionPercentage,
+              image:
+                imageMap[lang.name.toLowerCase()] ||
+                "/profil/language/python_pixel.png",
+            };
+          })
+        );
+
+        setLanguageProgress(progressData);
+      } catch (error) {
+        console.error("Failed to load language progress:", error);
+      }
+    };
+
+    loadLanguageProgress();
   }, [userId]);
 
   const getImagePath = (imagePath: string) => {
@@ -410,11 +506,24 @@ export default function Profil() {
           </div>
           <div className="flex flex-col justify-between gap-5 w-full ">
             <div className="flex items-center gap-5 mb-3 w-full">
-              <div className="flex items-center gap-2 translate-y-2 text-2xl">
-                <span>🥇</span>
-                <span>🥇</span>
-                <span>🥇</span>
-              </div>
+              {/* Affichage des badges - ne rien afficher si aucun badge */}
+              {earnedBadges.length > 0 && (
+                <div className="flex items-center gap-2 translate-y-2">
+                  {earnedBadges
+                    .filter((badge) => badge.Badge && badge.Badge.image)
+                    .map((badge) => (
+                      <div key={badge.id_badge} className="w-8 h-8">
+                        <Image
+                          src={getImagePath(badge.Badge.image)}
+                          alt={badge.Badge.name}
+                          width={32}
+                          height={32}
+                          className="pixelated-rendering"
+                        />
+                      </div>
+                    ))}
+                </div>
+              )}
               <div className="flex-1">
                 <div className="flex items-center justify-between text-white text-sm mb-1">
                   <p>Niveau {level}</p>
@@ -432,8 +541,28 @@ export default function Profil() {
             </div>
             <div className="flex items-center justify-between relative w-full mx-auto h-16">
               <div className={"flex gap-2"}>
-                <h2 className="text-4xl font-bold text-white">Solid Snake</h2>
-                <h2 className={"text-4xl"}>🇫🇷</h2>
+                <h2 className="text-4xl font-bold text-white">
+                  {userData?.name || "Utilisateur"}
+                </h2>
+                <h2 className={"text-4xl"}>
+                  {(() => {
+                    const country = countries.find(
+                      (c) => c.id_country === userData?.id_country
+                    );
+                    if (!country?.name) return "🌍";
+                    // Prendre les deux premières lettres du nom du pays
+                    const countryCode = country.name
+                      .substring(0, 2)
+                      .toUpperCase();
+                    // Convertir en emoji de drapeau
+                    return countryCode
+                      .split("")
+                      .map((char) =>
+                        String.fromCodePoint(127397 + char.charCodeAt(0))
+                      )
+                      .join("");
+                  })()}
+                </h2>
               </div>
               <button
                 onClick={() => {
@@ -726,66 +855,44 @@ export default function Profil() {
                     Progression
                   </h2>
                   <div className={"flex justify-between"}>
-                    <div className={"flex gap-5"}>
-                      <div className="flex items-center justify-center w-[100px]">
-                        <Image
-                          src="/profil/language/python_pixel.png"
-                          alt="Python"
-                          width={80}
-                          height={80}
-                          className="pixelated-rendering"
-                        />
+                    {languageProgress.length > 0 ? (
+                      languageProgress.map((lang) => (
+                        <div key={lang.id} className={"flex gap-5"}>
+                          <div className="flex items-center justify-center w-[100px]">
+                            <Image
+                              src={lang.image}
+                              alt={lang.name}
+                              width={80}
+                              height={80}
+                              className="pixelated-rendering"
+                            />
+                          </div>
+                          <div className={"text-white"}>
+                            <h2 className={"text-3xl font-bold"}>
+                              {lang.name}
+                            </h2>
+                            <p>
+                              complété à{" "}
+                              <span className={"font-bold"}>
+                                {lang.completionPercentage}
+                              </span>
+                              %
+                            </p>
+                            <p>
+                              <span className={"font-bold"}>
+                                {lang.completedCourses}
+                              </span>{" "}
+                              niveau{lang.completedCourses > 1 ? "x" : ""}{" "}
+                              réussi{lang.completedCourses > 1 ? "s" : ""}
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-white text-center w-full">
+                        <p>Aucune progression pour le moment</p>
                       </div>
-                      <div className={"text-white"}>
-                        <h2 className={"text-3xl font-bold"}>python</h2>
-                        <p>
-                          complété à <span className={"font-bold"}>50</span>%
-                        </p>
-                        <p>
-                          <span className={"font-bold"}>3</span> niveau réussis
-                        </p>
-                      </div>
-                    </div>
-                    <div className={"flex gap-5"}>
-                      <div className="flex items-center justify-center w-[100px]">
-                        <Image
-                          src="/profil/language/html5_pixel.png"
-                          alt="HTML"
-                          width={80}
-                          height={80}
-                          className="pixelated-rendering"
-                        />
-                      </div>
-                      <div className={"text-white"}>
-                        <h2 className={"text-3xl font-bold"}>html</h2>
-                        <p>
-                          complété à <span className={"font-bold"}>50</span>%
-                        </p>
-                        <p>
-                          <span className={"font-bold"}>3</span> niveau réussis
-                        </p>
-                      </div>
-                    </div>
-                    <div className={"flex gap-5"}>
-                      <div className="flex items-center justify-center w-[100px]">
-                        <Image
-                          src="/profil/language/css_old_pixel.png"
-                          alt="CSS"
-                          width={80}
-                          height={80}
-                          className="pixelated-rendering"
-                        />
-                      </div>
-                      <div className={"text-white"}>
-                        <h2 className={"text-3xl font-bold"}>css</h2>
-                        <p>
-                          complété à <span className={"font-bold"}>50</span>%
-                        </p>
-                        <p>
-                          <span className={"font-bold"}>3</span> niveau réussis
-                        </p>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
