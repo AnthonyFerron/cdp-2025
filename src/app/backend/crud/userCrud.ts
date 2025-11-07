@@ -143,6 +143,19 @@ export default class UserCrud extends ConfigCrud {
     }
   }
 
+  async updateCoins(id: IdUser, newCoins: number) {
+    try {
+      await this.prisma.user.update({
+        where: { id },
+        data: {
+          coins: newCoins,
+        },
+      });
+    } catch (err) {
+      throw new CrudError("updateCoins", String(err));
+    }
+  }
+
   async addExperienceToUser(id: IdUser, experienceToAdd: number) {
     try {
       await this.prisma.user.update({
@@ -153,6 +166,12 @@ export default class UserCrud extends ConfigCrud {
           },
         },
       });
+      this.updateUserLevel(
+        id,
+        Math.floor(
+          (experienceToAdd + (await this.getUserWithId(id))!.experience) / 1000
+        )
+      );
     } catch (err) {
       throw new CrudError("addExperienceToUser", String(err));
     }

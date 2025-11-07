@@ -1,6 +1,6 @@
 import CrudError from "../errors/crudError";
 import { MissionDB } from "../models/mission/mission.model";
-import { IdBadge, IdMission } from "../types/custom.types";
+import { IdBadge, IdCourse, IdMission } from "../types/custom.types";
 import ConfigCrud from "./configCrud";
 
 
@@ -12,6 +12,7 @@ export default class MissionCrud extends ConfigCrud {
         rewardCoins: number,
         rewardXp: number,
         targetType: string,
+        idCourse: IdCourse,
         idBadge?: IdBadge
     ) {
         try {
@@ -22,7 +23,8 @@ export default class MissionCrud extends ConfigCrud {
                     reward_coins: rewardCoins,
                     reward_xp: rewardXp,
                     target_type: targetType,
-                    id_badge: idBadge
+                    id_badge: idBadge,
+                    id_course: idCourse
                 }
             })
         } catch (err) {

@@ -8,4 +8,5 @@ export type CourseSection = {
     content: string
     image: string
     idCourse: IdCourse
+    code: string
 }
