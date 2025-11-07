@@ -149,7 +149,7 @@ export default function Header() {
           className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
         >
           <img className="h-auto w-[15%]" src="/header/cours.png" alt="cours" />
-          <span className="text-base sm:text-lg lg:text-xl">Mes cours</span>
+          <span className="text-[#FAF2EA]text-base sm:text-lg lg:text-xl">Mes cours</span>
         </Link>
 
         {showCoursesMenu && (
@@ -169,7 +169,7 @@ export default function Header() {
             </Link>
             <Link
               href="/carte/css"
-              className="block px-4 py-2 text-base text-white hover:bg-[#13ADDC] transition"
+              className="block px-4 py-2 text-base text-[#FAF2EA] hover:bg-[#13ADDC] transition"
               onClick={() => {
                 if (coursesCloseTimer.current) {
                   clearTimeout(coursesCloseTimer.current);
@@ -182,7 +182,7 @@ export default function Header() {
             </Link>
             <Link
               href="/carte/python"
-              className="block px-4 py-2 text-base text-white hover:bg-[#13ADDC] transition rounded-b-lg"
+              className="block px-4 py-2 text-base text-[#FAF2EA] hover:bg-[#13ADDC] transition rounded-b-lg"
               onClick={() => {
                 if (coursesCloseTimer.current) {
                   clearTimeout(coursesCloseTimer.current);
@@ -200,7 +200,7 @@ export default function Header() {
       {/* Missions (simple link désormais) */}
       <Link
         href="/missions"
-        className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
+        className="text-[#FAF2EA] flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
         <img
           className="h-auto w-[15%]"
@@ -213,7 +213,7 @@ export default function Header() {
 
       <Link
         href="/boutique"
-        className="flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
+        className="text-[#FAF2EA] flex items-center justify-center gap-2 cursor-pointer hover:text-[#13ADDC] transition"
       >
         <img
           className="h-auto w-[15%]"
@@ -230,7 +230,7 @@ export default function Header() {
         >
           <p className="text-lg">{userCoins}</p>
           <img src="header/coins.png" alt="" />
-          <p className="text-lg">Niveau {userLevel}</p>
+          <p className="text-lg text-[#FAF2EA]">Niveau {userLevel}</p>
           <img
             className="h-auto w-[15%]"
             src="/header/compte.png"
@@ -242,14 +242,14 @@ export default function Header() {
           <div className="absolute top-full mt-2 right-0 bg-[#1D1D1D] border-2 border-white rounded-lg shadow-lg z-50 min-w-[250px]">
             <Link
               href="/profil"
-              className="block px-6 py-3 text-2xl text-white hover:bg-[#13ADDC] hover:text-white transition rounded-t-lg"
+              className="block px-6 py-3 text-2xl text-[#FAF2EA] hover:bg-[#13ADDC] hover:text-white transition rounded-t-lg"
               onClick={() => setShowAccountMenu(false)}
             >
               👤 Mon Compte
             </Link>
             <button
               onClick={handleLogout}
-              className="w-full text-left px-6 py-3 text-2xl text-white hover:bg-red-600 hover:text-white transition rounded-b-lg"
+              className="w-full text-left px-6 py-3 text-2xl text-[#FAF2EA] hover:bg-red-600 hover:text-white transition rounded-b-lg"
             >
               🚪 Déconnexion
             </button>

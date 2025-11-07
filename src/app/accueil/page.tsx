@@ -47,7 +47,7 @@ export default function SignInPage() {
         <div className="flex justify-center items-center">
           <img className="w-1/4" src="langages.png" alt="langages" />
         </div>
-        <div className="bg-[#FFFFFF] text-black rounded-2xl p-10 shadow-xl border border-gray-300 relative overflow-hidden">
+        <div className="bg-[#FAF2EA] text-black rounded-2xl p-10 shadow-xl border border-gray-300 relative overflow-hidden">
           <div className="flex justify-center mb-6">
             <h2 className="bg-[#E5E7EB] border-2 border-black rounded-md px-6 py-2 text-lg font-bold uppercase shadow-md">
               DES LANGAGES ESSENTIELS
@@ -62,7 +62,7 @@ export default function SignInPage() {
         </div>
 
         {/* Exercices réels */}
-        <div className="bg-white text-black rounded-2xl p-10 shadow-xl border border-gray-300 relative overflow-hidden">
+        <div className="bg-[#FAF2EA] text-black rounded-2xl p-10 shadow-xl border border-gray-300 relative overflow-hidden">
           <div className="flex justify-center mb-6">
             <h2 className="bg-[#E5E7EB] border-2 border-black rounded-md px-6 py-2 text-lg font-bold uppercase shadow-md">
               DES EXERCICES RÉELS
@@ -83,7 +83,7 @@ export default function SignInPage() {
         <div className="flex justify-center items-center">
           <img className="w-1/2" src="aliens.png" alt="aliens" />
         </div>
-        <div className="bg-white text-black rounded-2xl p-10 shadow-xl border border-gray-300 relative overflow-hidden">
+        <div className="bg-[#FAF2EA] text-black rounded-2xl p-10 shadow-xl border border-gray-300 relative overflow-hidden">
           <div className="flex justify-center mb-6">
             <h2 className="bg-[#E5E7EB] border-2 border-black rounded-md px-6 py-2 text-lg font-bold uppercase shadow-md">
               UNE PROGRESSION LINÉAIRE

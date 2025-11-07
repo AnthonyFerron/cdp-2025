@@ -48,7 +48,7 @@ export default function MissionsPage() {
     <div className="bg-[#1D1D1D]">
       <div className="min-h-screen bg-[#1D1D1D] text-black font-[silkscreen] flex flex-col items-center py-10 px-4">
         <Header />
-        <div className="bg-[#F6F4EF] rounded-lg px-10 py-4 text-3xl text-center mb-8 mt-10">
+        <div className="bg-[#FAF2EA] rounded-lg px-10 py-4 text-3xl text-center mb-8 mt-10">
           MISSIONS :
         </div>
 
@@ -79,7 +79,7 @@ export default function MissionsPage() {
             <div
               key={mission.id_mission}
               className={`${
-                index === 0 ? "bg-[#5AB2F3]" : "bg-[#F6F4EF]"
+                index === 0 ? "bg-[#5AB2F3]" : "bg-[#FAF2EA]"
               } text-black w-full max-w-3xl rounded-lg px-6 py-4 mb-6 shadow-md`}
             >
               <h3 className="text-xl mb-2 text-center">
