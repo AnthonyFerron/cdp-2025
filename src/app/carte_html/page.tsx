@@ -72,7 +72,6 @@ function PinNiveau({ niveau, onClick }: { niveau: Niveau; onClick: () => void })
         width: '38px',
         height: '38px',
         opacity: 0,
-        cursor: 'pointer'
       }}
       aria-label={`Ouvrir le cours ${libelle}`}
       title={libelle}
@@ -82,10 +81,10 @@ function PinNiveau({ niveau, onClick }: { niveau: Niveau; onClick: () => void })
 }
 
 const niveauxParDefaut: Niveau[] = [
-  { id: "css1", libelle: "CSS 1", lien: "/cours/html1", x: 22.2, y: 75 },
-  { id: "css2", libelle: "CSS 2", lien: "/cours/html2", x: 35.5, y: 62 },
-  { id: "css3", libelle: "CSS 3", lien: "/cours/html3", x: 53.3, y: 50 },
-  { id: "css4", libelle: "CSS 4", lien: "/cours/html4", x: 75.5, y: 50 },
-  { id: "css5", libelle: "CSS 5", lien: "/cours/html5", x: 89, y: 45 },
-  { id: "css6", libelle: "CSS 6", lien: "/cours/html6", x: 75.5, y: 25 },
+  { id: "css1", libelle: "Niveau 1", lien: "/cours/html1", x: 22.2, y: 75 },
+  { id: "css2", libelle: "Niveau 2", lien: "/cours/html2", x: 35.5, y: 62 },
+  { id: "css3", libelle: "Niveau 3", lien: "/cours/html3", x: 53.3, y: 50 },
+  { id: "css4", libelle: "Niveau 4", lien: "/cours/html4", x: 75.5, y: 50 },
+  { id: "css5", libelle: "Niveau 5", lien: "/cours/html5", x: 89, y: 45 },
+  { id: "css6", libelle: "Niveau 6", lien: "/cours/html6", x: 75.5, y: 25 },
 ];
