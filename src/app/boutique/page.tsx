@@ -295,7 +295,7 @@ export default function Accueil() {
                 {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
                 <div className="grid grid-cols-2 w-full gap-2">
                   <button
-                    className="w-full text-center outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:mt-0.5"
+                    className="w-full text-center outline-[#989AAF] outline-2 border-2 cursor-pointer border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:mt-0.5"
                     onClick={() => {
                       setModalOpen(false);
                       setSelected(null);
@@ -306,7 +306,7 @@ export default function Accueil() {
                     Annuler
                   </button>
                   <button
-                    className="outline-[#989AAF] outline-2 border-2 border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:mt-0.5 px-5 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="outline-[#989AAF] outline-2 border-2 cursor-pointer border-[#FFFFFF] rounded bg-[#DADCE7] shadow-[0px_2px_0px_2px_#666880] hover:shadow-none hover:mt-0.5 px-5 disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={handlePurchase}
                     disabled={purchasing}
                   >
