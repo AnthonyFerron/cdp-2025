@@ -11,7 +11,8 @@ export default class CourseSectionTransformer {
             image: courseSection.image,
             content: courseSection.content,
             orderBy: courseSection.order_by,
-            title: courseSection.title
+            title: courseSection.title,
+            code: courseSection.code
         }
     }
 }

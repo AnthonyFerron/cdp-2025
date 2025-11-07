@@ -18,7 +18,8 @@ export default class CourseSectionBusinessLogic {
         title: string,
         content: string,
         idCourse: IdCourse,
-        image: string
+        image: string,
+        code: string
     ) {
 
         // Check if idCourse is valid
@@ -29,7 +30,8 @@ export default class CourseSectionBusinessLogic {
             title,
             content,
             idCourse,
-            image
+            image,
+            code
         )
     }
 

@@ -17,13 +17,15 @@ export default class CourseSectionController {
                 title,
                 content,
                 idCourse,
-                image
+                image,
+                code
             }: CourseSectionCreateDto = await req.json()
 
             if (
                 orderBy && typeof orderBy === 'number' &&
                 title && typeof title === 'string' &&
                 content && typeof content === 'string' &&
+                code && typeof code === 'string' &&
                 idCourse && typeof idCourse === 'number' &&
                 typeof image === 'string'
             ) {
@@ -32,7 +34,8 @@ export default class CourseSectionController {
                     title,
                     content,
                     idCourse as IdCourse,
-                    image
+                    image,
+                    code
                 )
                 return new NextResponse(null, { status: 200 })
             } else {
@@ -52,12 +55,14 @@ export default class CourseSectionController {
                 content,
                 idCourse,
                 image,
-                idCourseSection
+                idCourseSection,
+                code
             }: CourseSectionUpdateDto = await req.json()
 
             if (
                 orderBy && typeof orderBy === 'number' &&
                 title && typeof title === 'string' &&
+                code && typeof code === 'string' &&
                 content && typeof content === 'string' &&
                 idCourse && typeof idCourse === 'number' &&
                 idCourseSection && typeof idCourseSection === 'number' &&
@@ -69,7 +74,8 @@ export default class CourseSectionController {
                     content,
                     idCourse: idCourse as IdCourse,
                     idCourseSection: idCourseSection as IdCourseSection,
-                    image
+                    image,
+                    code
                 })
                 return new NextResponse(null, { status: 200 })
             } else {
