@@ -28,7 +28,6 @@ export default function SignInPage() {
           </a>
         </div>
       </div>
-
       {/* Section principale */}
       <div className="grid md:grid-cols-2 gap-16 px-8 py-20">
         {/* Langages */}
@@ -97,8 +96,6 @@ export default function SignInPage() {
         </a>
          <FooterMini />
       </div>
-  
     </div>
-    
   );
 }
