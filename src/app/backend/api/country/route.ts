@@ -9,7 +9,6 @@ export async function GET() {
     });
     return new Response(JSON.stringify({ countries }), { status: 200 });
   } catch (error) {
-    console.error("Error fetching countries:", error);
     return new Response("Failed to fetch countries", { status: 500 });
   }
 }
@@ -25,7 +24,6 @@ export async function POST(request: Request) {
     });
     return new Response(JSON.stringify(newCountry), { status: 201 });
   } catch (error) {
-    console.error("Error creating country:", error);
     return new Response("Failed to create country", { status: 500 });
   }
 }

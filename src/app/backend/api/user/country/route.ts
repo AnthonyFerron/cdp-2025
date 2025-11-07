@@ -9,7 +9,6 @@ export async function GET() {
     });
     return new Response(JSON.stringify(countries), { status: 200 });
   } catch (error) {
-    console.error("Error fetching countries:", error);
     return new Response("Failed to fetch countries", { status: 500 });
   }
 }
