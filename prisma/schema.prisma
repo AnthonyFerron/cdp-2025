@@ -18,13 +18,15 @@ model Country {
   name       String @unique @db.VarChar(50)
   image      String @db.VarChar(50)
 
-  player player[]
+  users User[]
 }
 
 model Cosmetic {
   id_cosmetic Int     @id @default(autoincrement())
+  name        String  @db.VarChar(50)
   type        String  @db.VarChar(50)
   price       Int
+  image       String  @db.VarChar(255)
   is_active   Boolean
 
   owned owned[]
@@ -40,11 +42,15 @@ model Badge {
 }
 
 model Mission {
-  id_mission   Int    @id @default(autoincrement())
-  target_type  String @db.VarChar(50)
+  id_mission   Int      @id @default(autoincrement())
+  title        String   @db.VarChar(50)
+  content      String   @db.VarChar(1000)
+  target_type  String   @db.VarChar(50)
   reward_xp    Int?
   reward_coins Int?
   id_badge     Int?
+  create_at    DateTime @default(now())
+  id_course    Int
 
   Badge    Badge?     @relation(fields: [id_badge], references: [id_badge])
   achieved achieved[]
@@ -59,13 +65,14 @@ model Programming_Language {
 }
 
 model Course {
-  id_course      Int     @id @default(autoincrement())
-  title          String  @db.VarChar(50)
-  slug           String  @db.VarChar(50)
+  id_course      Int      @id @default(autoincrement())
+  title          String   @db.VarChar(50)
+  slug           String   @db.VarChar(50)
   difficulty     Int
   is_published   Boolean
   estimated_time Int
   id_language    Int
+  create_at      DateTime @default(now())
 
   Programming_Language Programming_Language @relation(fields: [id_language], references: [id_language])
   Lore                 Lore[]
@@ -88,13 +95,14 @@ model Course_section {
   order_by          Int
   title             String @db.VarChar(50)
   content           String @db.VarChar(8000)
-  image             String @db.VarChar(50)
+  image             String? @db.VarChar(50)
   id_course         Int
+  code              String
 
   Course   Course     @relation(fields: [id_course], references: [id_course])
   progress progress[]
 
-  @@unique([order_by])
+  @@unique([id_course, order_by])
 }
 
 model Quiz {
@@ -138,37 +146,16 @@ model Help_Content {
   Used Used[]
 }
 
-model player {
-  id_player  Int    @id @default(autoincrement())
-  pseudo     String @unique @db.VarChar(50)
-  email      String @unique @db.VarChar(50)
-  password   String @db.VarChar(50)
-  experience Int
-  levels     Int
-  coins      Int
-  role       String @db.VarChar(50)
-  id_country Int
-
-  Country      Country        @relation(fields: [id_country], references: [id_country])
-  progress     progress[]
-  Quiz_Attempt Quiz_Attempt[]
-  Game_Attempt Game_Attempt[]
-  owned        owned[]
-  earned       earned[]
-  achieved     achieved[]
-  Used         Used[]
-}
-
 model progress {
-  id_progress       Int @id @default(autoincrement())
+  id_progress       Int    @id @default(autoincrement())
   progress_point    Int
   id_course_section Int
   id_course         Int
-  id_player         Int
+  user_id           String
 
   Course_section Course_section @relation(fields: [id_course_section], references: [id_course_section])
   Course         Course         @relation(fields: [id_course], references: [id_course])
-  player         player         @relation(fields: [id_player], references: [id_player])
+  User           User           @relation(fields: [user_id], references: [id])
 }
 
 model Quiz_Attempt {
@@ -177,11 +164,11 @@ model Quiz_Attempt {
   passed          Boolean
   started_at      DateTime
   completed_at    DateTime
-  id_player       Int
+  id_user         String
   id_quiz         Int
 
-  player player @relation(fields: [id_player], references: [id_player])
-  Quiz   Quiz   @relation(fields: [id_quiz], references: [id_quiz])
+  User User @relation(fields: [id_user], references: [id])
+  Quiz Quiz @relation(fields: [id_quiz], references: [id_quiz])
 }
 
 model Game_Attempt {
@@ -190,46 +177,46 @@ model Game_Attempt {
   passed          Boolean
   started_at      DateTime
   completed_at    DateTime
-  id_player       Int
+  user_id         String
   id_game         Int
 
-  player player @relation(fields: [id_player], references: [id_player])
-  Game   Game   @relation(fields: [id_game], references: [id_game])
+  User User @relation(fields: [user_id], references: [id])
+  Game Game @relation(fields: [id_game], references: [id_game])
 }
 
 model owned {
-  id_player   Int
+  user_id     String
   id_cosmetic Int
   is_equiped  Boolean
   aquired_at  DateTime
 
-  player   player   @relation(fields: [id_player], references: [id_player])
+  User     User     @relation(fields: [user_id], references: [id])
   Cosmetic Cosmetic @relation(fields: [id_cosmetic], references: [id_cosmetic])
 
-  @@id([id_player, id_cosmetic])
+  @@id([user_id, id_cosmetic])
 }
 
 model earned {
-  id_player  Int
+  id_user    String
   id_badge   Int
   is_equiped Boolean
   earned_at  DateTime
 
-  player player @relation(fields: [id_player], references: [id_player])
-  Badge  Badge  @relation(fields: [id_badge], references: [id_badge])
+  User  User  @relation(fields: [id_user], references: [id])
+  Badge Badge @relation(fields: [id_badge], references: [id_badge])
 
-  @@id([id_player, id_badge])
+  @@id([id_user, id_badge])
 }
 
 model achieved {
-  id_player  Int
+  id_user    String
   id_mission Int
-  status     String @db.VarChar(50)
+  is_completed     Boolean
 
-  player  player  @relation(fields: [id_player], references: [id_player])
+  User    User    @relation(fields: [id_user], references: [id])
   Mission Mission @relation(fields: [id_mission], references: [id_mission])
 
-  @@id([id_player, id_mission])
+  @@id([id_user, id_mission])
 }
 
 model to_gamify {
@@ -243,13 +230,13 @@ model to_gamify {
 }
 
 model Used {
-  id_player       Int
+  user_id         String
   id_help_content Int
 
-  player       player       @relation(fields: [id_player], references: [id_player])
+  User         User         @relation(fields: [user_id], references: [id])
   Help_Content Help_Content @relation(fields: [id_help_content], references: [id_help_content])
 
-  @@id([id_player, id_help_content])
+  @@id([user_id, id_help_content])
 }
 
 model User {
@@ -257,11 +244,26 @@ model User {
   name          String
   email         String
   emailVerified Boolean   @default(false)
-  image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+
+  experience Int
+  levels     Int
+  coins      Int
+  role       String   @db.VarChar(50)
+  id_country Int
+  create_at  DateTime @default(now())
+
+  Country      Country        @relation(fields: [id_country], references: [id_country])
+  progress     progress[]
+  Quiz_Attempt Quiz_Attempt[]
+  Game_Attempt Game_Attempt[]
+  owned        owned[]
+  earned       earned[]
+  achieved     achieved[]
+  Used         Used[]
 
   @@unique([email])
   @@map("user")
